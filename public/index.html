@@ -23,14 +23,11 @@ body{font-family:var(--fb);background:var(--g1);color:var(--w);min-height:100vh;
 @keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
 h1{font-family:var(--fd);font-size:clamp(34px,7vw,58px);font-weight:800;letter-spacing:-.025em;line-height:1.02;margin-bottom:12px}
 h1 em{font-style:normal;color:var(--lime)}
-.sub{font-size:15px;color:var(--w4);font-weight:300;max-width:460px;margin:0 auto;line-height:1.65}
+.sub{font-size:15px;color:var(--w4);font-weight:300;max-width:480px;margin:0 auto;line-height:1.65}
 .rate{display:flex;align-items:center;gap:9px;padding:11px 16px;margin-bottom:22px;background:var(--teal-a);border:1px solid var(--teal-b);border-radius:var(--rs);animation:up .6s .08s ease both}
 .rdot{width:8px;height:8px;border-radius:50%;background:#444;flex-shrink:0;transition:background .4s,box-shadow .4s}
-.rdot.ok{background:var(--lime);box-shadow:0 0 7px var(--lime)}
-.rdot.err{background:var(--coral)}
-.rl{font-size:13px;color:var(--w4)}
-.rv{font-size:13px;font-weight:500;color:var(--teal);font-family:var(--fm)}
-.rt{font-size:12px;color:var(--w4);margin-left:auto}
+.rdot.ok{background:var(--lime);box-shadow:0 0 7px var(--lime)}.rdot.err{background:var(--coral)}
+.rl{font-size:13px;color:var(--w4)}.rv{font-size:13px;font-weight:500;color:var(--teal);font-family:var(--fm)}.rt{font-size:12px;color:var(--w4);margin-left:auto}
 .card{background:var(--w04);border:1px solid var(--w08);border-radius:var(--r);padding:26px 26px 22px;margin-bottom:14px;backdrop-filter:blur(14px);animation:up .6s ease both}
 .ch{display:flex;align-items:center;gap:10px;margin-bottom:20px}
 .ci{width:30px;height:30px;border-radius:8px;display:grid;place-items:center;font-size:15px;flex-shrink:0}
@@ -38,27 +35,41 @@ h1 em{font-style:normal;color:var(--lime)}
 .ci.c-teal{background:var(--teal-a)}.ci.c-amber{background:var(--amber-a)}.ci.c-coral{background:var(--coral-a)}
 .fld{display:flex;flex-direction:column;gap:6px;margin-bottom:12px}
 .fld label{font-size:12px;font-weight:500;color:var(--w4)}
-input{background:rgba(255,255,255,.06);border:1px solid var(--w15);border-radius:var(--rs);padding:12px 14px;font-size:15px;font-family:var(--fb);color:var(--w);width:100%;outline:none;transition:border-color .18s,background .18s}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}
+input,select{background:rgba(255,255,255,.06);border:1px solid var(--w15);border-radius:var(--rs);padding:12px 14px;font-size:15px;font-family:var(--fb);color:var(--w);width:100%;outline:none;transition:border-color .18s,background .18s}
 input::placeholder{color:rgba(255,255,255,.2)}
-input:focus{border-color:var(--teal);background:var(--teal-a)}
+input:focus,select:focus{border-color:var(--teal);background:var(--teal-a)}
+select option{background:#0d1827}
 .px{position:relative}.px input{padding-left:28px}
 .pxs{position:absolute;left:11px;top:50%;transform:translateY(-50%);font-size:14px;color:var(--w4);pointer-events:none}
+
+/* SIM toggle */
+.sim-row{display:flex;gap:8px;margin-bottom:4px}
+.sim-btn{flex:1;padding:10px 8px;background:rgba(255,255,255,.06);border:1px solid var(--w15);border-radius:var(--rs);color:var(--w4);font-family:var(--fd);font-size:12px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;cursor:pointer;transition:all .18s;text-align:center}
+.sim-btn:hover{background:var(--teal-a);border-color:var(--teal-b);color:var(--teal)}
+.sim-btn.active{background:var(--lime-a);border-color:var(--lime-b);color:var(--lime)}
+.sim-hint{font-size:11px;color:var(--w4);margin-top:6px}
+
 .sbtn{display:flex;align-items:center;justify-content:center;gap:9px;width:100%;margin-top:4px;padding:13px;background:var(--teal-a);border:1px solid var(--teal-b);border-radius:var(--rs);color:var(--teal);font-family:var(--fd);font-size:14px;font-weight:700;letter-spacing:.04em;cursor:pointer;transition:background .18s}
-.sbtn:hover{background:rgba(0,229,212,.18)}
-.sbtn.busy{opacity:.6;pointer-events:none}
+.sbtn:hover{background:rgba(0,229,212,.18)}.sbtn.busy{opacity:.6;pointer-events:none}
 .spin{width:14px;height:14px;border:2px solid rgba(0,229,212,.25);border-top-color:var(--teal);border-radius:50%;animation:spin .65s linear infinite;display:none;flex-shrink:0}
 .busy .spin{display:block}
 @keyframes spin{to{transform:rotate(360deg)}}
 .ebox{display:none;margin-top:10px;padding:11px 14px;background:var(--coral-a);border:1px solid var(--coral-b);border-radius:var(--rs);font-size:13px;color:var(--coral);line-height:1.55}
-.rlist{display:none;flex-direction:column;gap:5px;margin-top:12px;max-height:300px;overflow-y:auto}
+.info-box{display:none;margin-top:10px;padding:11px 14px;background:var(--amber-a);border:1px solid rgba(255,176,32,.25);border-radius:var(--rs);font-size:13px;color:var(--amber);line-height:1.55}
+.rlist{display:none;flex-direction:column;gap:5px;margin-top:12px;max-height:320px;overflow-y:auto}
 .rlist::-webkit-scrollbar{width:3px}
 .rlist::-webkit-scrollbar-thumb{background:var(--w15);border-radius:3px}
-.ritem{display:flex;align-items:center;gap:12px;padding:12px 14px;background:var(--w04);border:1px solid var(--w08);border-radius:var(--rs);cursor:pointer;transition:background .15s,border-color .15s}
+.ritem{display:flex;align-items:center;gap:12px;padding:11px 14px;background:var(--w04);border:1px solid var(--w08);border-radius:var(--rs);cursor:pointer;transition:background .15s,border-color .15s}
 .ritem:hover{background:var(--teal-a);border-color:var(--teal-b)}
 .ritem.sel{background:var(--lime-a);border-color:var(--lime-b);border-width:1.5px}
 .ri-left{flex:1;min-width:0}
 .ri-title{font-size:13px;color:var(--w);line-height:1.35;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.ri-grade{font-size:11px;color:var(--w4);margin-top:2px}
+.ri-meta{font-size:11px;color:var(--w4);margin-top:3px;display:flex;gap:8px;flex-wrap:wrap}
+.ri-tag{padding:2px 7px;border-radius:4px;font-size:10px;font-weight:600;letter-spacing:.04em;text-transform:uppercase}
+.tag-esim{background:rgba(0,229,212,.15);color:var(--teal)}
+.tag-physical{background:rgba(255,176,32,.15);color:var(--amber)}
+.tag-grade{background:rgba(255,255,255,.08);color:var(--w4)}
 .ri-right{flex-shrink:0;text-align:right}
 .ri-price{font-family:var(--fm);font-size:16px;font-weight:500;color:var(--lime)}
 .ri-note{font-size:11px;color:var(--w4);margin-top:2px}
@@ -70,9 +81,7 @@ input:focus{border-color:var(--teal);background:var(--teal-a)}
 .fbadge{background:var(--w04);border:1px solid var(--w08);border-radius:var(--rs);padding:14px 12px;text-align:center}
 .fbl{font-size:11px;color:var(--w4);margin-bottom:6px;line-height:1.4}
 .fbv{font-family:var(--fm);font-size:21px;font-weight:500}
-.fbadge:nth-child(1) .fbv{color:var(--teal)}
-.fbadge:nth-child(2) .fbv{color:var(--amber)}
-.fbadge:nth-child(3) .fbv{color:var(--coral)}
+.fbadge:nth-child(1) .fbv{color:var(--teal)}.fbadge:nth-child(2) .fbv{color:var(--amber)}.fbadge:nth-child(3) .fbv{color:var(--coral)}
 .target-bar{display:flex;align-items:center;gap:8px;margin-top:12px;padding:10px 14px;background:var(--lime-a);border:1px solid var(--lime-b);border-radius:var(--rs);font-size:13px;color:rgba(184,240,0,.85)}
 .cta{width:100%;margin-top:6px;padding:17px;background:var(--lime);color:var(--g1);border:none;border-radius:var(--r);font-family:var(--fd);font-size:17px;font-weight:800;cursor:pointer;position:relative;overflow:hidden;transition:transform .18s,box-shadow .18s,background .18s}
 .cta:hover{background:var(--lime2);transform:translateY(-2px);box-shadow:0 14px 42px rgba(184,240,0,.25)}
@@ -94,8 +103,7 @@ input:focus{border-color:var(--teal);background:var(--teal-a)}
 .vbuy{background:linear-gradient(145deg,rgba(184,240,0,.1),rgba(0,229,212,.06));border:2px solid rgba(184,240,0,.35)}
 .vno{background:linear-gradient(145deg,rgba(255,94,94,.12),rgba(200,30,30,.04));border:2px solid rgba(255,94,94,.35)}
 .vglow{position:absolute;width:500px;height:500px;border-radius:50%;top:50%;left:50%;transform:translate(-50%,-50%);pointer-events:none;opacity:.07}
-.vbuy .vglow{background:radial-gradient(circle,var(--lime),transparent 70%)}
-.vno .vglow{background:radial-gradient(circle,var(--coral),transparent 70%)}
+.vbuy .vglow{background:radial-gradient(circle,var(--lime),transparent 70%)}.vno .vglow{background:radial-gradient(circle,var(--coral),transparent 70%)}
 .vemoji{font-size:48px;display:block;margin-bottom:10px;position:relative}
 .vlabel{font-family:var(--fd);font-size:clamp(44px,9vw,68px);font-weight:800;letter-spacing:-.025em;margin-bottom:10px;position:relative;line-height:1}
 .vbuy .vlabel{color:var(--lime)}.vno .vlabel{color:var(--coral)}
@@ -107,7 +115,7 @@ input:focus{border-color:var(--teal);background:var(--teal-a)}
 .rbtn:hover{border-color:var(--w4);color:var(--w)}
 .footer{text-align:center;margin-top:60px;font-size:12px;color:rgba(255,255,255,.18)}
 @keyframes up{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
-@media(max-width:560px){.fee-grid{grid-template-columns:1fr}.page{padding:28px 16px 80px}.card{padding:20px 18px}h1{font-size:36px}}
+@media(max-width:560px){.fee-grid,.grid2{grid-template-columns:1fr}.page{padding:28px 16px 80px}.card{padding:20px 18px}h1{font-size:36px}}
 </style>
 </head>
 <body>
@@ -116,21 +124,47 @@ input:focus{border-color:var(--teal);background:var(--teal-a)}
   <div class="header">
     <div class="chip"><span class="chip-dot"></span>G&amp;I &times; CDK &mdash; Live</div>
     <h1>Buy <em>smarter,</em><br>not harder.</h1>
-    <p class="sub">Search BackMarket live prices, enter CDK's buy cost &mdash; get an instant buy or pass decision.</p>
+    <p class="sub">Search your BackMarket listings by model, grade and SIM type &mdash; get an instant buy or pass decision.</p>
   </div>
   <div class="rate"><div class="rdot" id="rdot"></div><span class="rl">Live USD&rarr;EUR:</span><span class="rv" id="rv">Loading...</span><span class="rt" id="rt"></span></div>
+
   <div class="card" style="animation-delay:.06s">
-    <div class="ch"><div class="ci c-teal">&#128269;</div><span class="ct">Step 1 &mdash; Find device on BackMarket</span></div>
-    <div class="fld"><label>Device model</label><input type="text" id="q" placeholder="e.g. iPhone 15 Pro 256GB" onkeydown="if(event.key==='Enter')doSearch()"/></div>
-    <button class="sbtn" id="sbtn" onclick="doSearch()"><div class="spin" id="spin"></div><span id="sbtn-txt">Fetch live BackMarket prices &rarr;</span></button>
+    <div class="ch"><div class="ci c-teal">&#128269;</div><span class="ct">Step 1 &mdash; Search your BackMarket listings</span></div>
+
+    <div class="fld">
+      <label>Device model &amp; storage (e.g. Samsung Galaxy S22 128GB)</label>
+      <input type="text" id="q" placeholder="e.g. iPhone 14 Pro 256GB or Galaxy S22 128GB" onkeydown="if(event.key==='Enter')doSearch()"/>
+    </div>
+
+    <div class="fld">
+      <label>SIM type</label>
+      <div class="sim-row">
+        <button class="sim-btn active" id="sim-all" onclick="setSim('all',this)">All</button>
+        <button class="sim-btn" id="sim-esim" onclick="setSim('esim',this)">eSIM only</button>
+        <button class="sim-btn" id="sim-physical" onclick="setSim('physical',this)">Physical SIM only</button>
+      </div>
+      <div class="sim-hint">eSIM and Physical SIM listings have different selling prices &mdash; filter to see the right one</div>
+    </div>
+
+    <button class="sbtn" id="sbtn" onclick="doSearch()"><div class="spin" id="spin"></div><span id="sbtn-txt">Search your BackMarket listings &rarr;</span></button>
     <div class="ebox" id="ebox"></div>
+    <div class="info-box" id="ibox"></div>
     <div class="rlist" id="rlist"></div>
-    <div class="price-display" id="pdisplay"><div class="pd-label">Selected BackMarket selling price</div><div class="pd-price" id="pd-price"></div><div class="pd-name" id="pd-name"></div></div>
+    <div class="price-display" id="pdisplay">
+      <div class="pd-label">Selected listing &mdash; selling price</div>
+      <div class="pd-price" id="pd-price"></div>
+      <div class="pd-name" id="pd-name"></div>
+    </div>
   </div>
+
   <div class="card" style="animation-delay:.12s">
     <div class="ch"><div class="ci c-amber">&#128181;</div><span class="ct">Step 2 &mdash; CDK's buy price</span></div>
-    <div class="fld"><label>What CDK pays per unit (USD)</label><div class="px"><span class="pxs">$</span><input type="number" id="buy" placeholder="0.00" step="0.01" min="0"/></div></div>
+    <div class="fld">
+      <label>What CDK pays per unit (USD)</label>
+      <div class="px"><span class="pxs">$</span><input type="number" id="buy" placeholder="0.00" step="0.01" min="0"/></div>
+    </div>
   </div>
+
   <div class="card" style="animation-delay:.18s">
     <div class="ch"><div class="ci c-coral">&#128202;</div><span class="ct">Fee structure &mdash; fixed</span></div>
     <div class="fee-grid">
@@ -140,7 +174,9 @@ input:focus{border-color:var(--teal);background:var(--teal-a)}
     </div>
     <div class="target-bar">&#127919; &nbsp;Minimum net margin for green signal: <strong>5%</strong></div>
   </div>
+
   <button class="cta" onclick="calc()">Calculate &mdash; buy or pass? &rarr;</button>
+
   <div class="results" id="results">
     <div class="bcard" id="bcard"></div>
     <div class="maxbuy" id="maxbuy"><div class="maxbuy-label">Max CDK should pay to hit 5%</div><div class="maxbuy-val" id="maxbuy-val"></div></div>
@@ -150,22 +186,132 @@ input:focus{border-color:var(--teal);background:var(--teal-a)}
   <div class="footer">CDK Buying Calculator &middot; G&amp;I International Ltd &times; CDK Tech HK</div>
 </div>
 <script>
-let rate=null,picked=null;
+let rate=null,picked=null,simFilter='all';
 loadRate();
-async function loadRate(){try{const d=await apiFetch('/api/rate');rate=d.rate;el('rdot').className='rdot ok';el('rv').textContent='1 USD = '+rate.toFixed(4)+' EUR';el('rt').textContent='Live · '+now();}catch(e){rate=0.92;el('rdot').className='rdot err';el('rv').textContent='Fallback: 0.9200';}}
-async function doSearch(){const q=el('q').value.trim();if(!q)return showErr('Please enter a device model name.');setBusy(true);hideErr();hide('rlist');hide('pdisplay');picked=null;try{const d=await apiFetch('/api/search?q='+encodeURIComponent(q));if(!d.results||!d.results.length){showErr('No listings found for "'+q+'". Try a shorter search.');setBusy(false);return;}renderResults(d.results);}catch(e){showErr('Error: '+e.message);}setBusy(false);}
-function renderResults(items){const list=el('rlist');list.innerHTML='';items.slice(0,12).forEach(item=>{const div=document.createElement('div');div.className='ritem';const g=tg(item.grade);div.innerHTML='<div class="ri-left"><div class="ri-title">'+esc(item.title)+'</div>'+(g?'<div class="ri-grade">'+g+'</div>':'')+'</div><div class="ri-right"><div class="ri-price">€'+item.price.toFixed(2)+'</div><div class="ri-note">'+(item.currency||'EUR')+'</div></div>';div.onclick=()=>selectItem(item,div);list.appendChild(div);});list.style.display='flex';}
-function tg(g){if(!g)return '';const l=g.toLowerCase();if(l.includes('parfait')||l.includes('new')||l.includes('neuf'))return '✨ Like New';if(l.includes('très bon')||l.includes('tres bon')||l.includes('good'))return '👍 Good';if(l.includes('bon')||l.includes('correct')||l.includes('fair'))return '👌 Fair';if(l.includes('poor')||l.includes('passable'))return '⚠️ Poor';return g;}
-function selectItem(item,el_){document.querySelectorAll('.ritem').forEach(d=>d.classList.remove('sel'));el_.classList.add('sel');picked={title:item.title,price:item.price,grade:item.grade};el('pd-price').textContent='€'+item.price.toFixed(2);el('pd-name').textContent=item.title+(item.grade?' · '+tg(item.grade):'');show('pdisplay');}
-function calc(){const buyUSD=parseFloat(el('buy').value)||0;if(!picked){alert('Please select a BackMarket listing first.');return;}if(!buyUSD||buyUSD<=0){alert("Please enter CDK's buy price in USD.");return;}const r=rate||0.92,sell=picked.price,buyEUR=buyUSD*r,commission=sell*0.12,shipping=15,ccbm=7,netRev=sell-commission-shipping-ccbm,profit=netRev-buyEUR,margin=sell>0?(profit/sell)*100:0,shouldBuy=profit>0&&margin>=5,maxBuyUSD=(netRev*0.95)/r;const rows=[{l:'BackMarket selling price',v:'€'+sell.toFixed(2),c:''},{l:'BackMarket commission (12%)',v:'−€'+commission.toFixed(2),c:'sub'},{l:'Shipping per order',v:'−€'+shipping.toFixed(2),c:'sub'},{l:'CCBM fee',v:'−€'+ccbm.toFixed(2),c:'sub'},{l:'Net revenue after all fees',v:'€'+netRev.toFixed(2),c:'total'},{l:'CDK buy cost ($'+buyUSD.toFixed(2)+' × '+r.toFixed(4)+')',v:'−€'+buyEUR.toFixed(2),c:'sub'},{l:'Profit per unit',v:fmt(profit),c:profit>=0?'grn':'red'},{l:'Net margin',v:margin.toFixed(2)+'%',c:margin>=5?'grn':'red'}];el('bcard').innerHTML='<div class="bc-title">Cost breakdown — '+esc(picked.title)+'</div>'+rows.map(r=>'<div class="brow '+r.c+'"><span>'+r.l+'</span><span class="mono">'+r.v+'</span></div>').join('');if(!shouldBuy&&maxBuyUSD>0){el('maxbuy-val').textContent='$'+maxBuyUSD.toFixed(2)+' USD max to hit 5%';show('maxbuy');}else{hide('maxbuy');}const vb=el('vbox');if(shouldBuy){vb.className='verdict vbuy';vb.innerHTML='<div class="vglow"></div><span class="vemoji">&#128994;</span><div class="vlabel">BUY IT</div><div class="vdetail">€'+profit.toFixed(2)+' profit · '+margin.toFixed(2)+'% net margin</div><div class="vsub">Clears the 5% minimum ✓</div>';}else{vb.className='verdict vno';vb.innerHTML='<div class="vglow"></div><span class="vemoji">&#128308;</span><div class="vlabel">PASS</div><div class="vdetail">'+margin.toFixed(2)+'% margin'+(profit<0?' · Loss of €'+Math.abs(profit).toFixed(2)+'/unit':' · Below 5% target')+'</div><div class="vsub">Negotiate a lower price from CDK</div>';}show('results');el('results').scrollIntoView({behavior:'smooth',block:'nearest'});}
-function doReset(){picked=null;el('q').value='';el('buy').value='';hide('rlist');hide('pdisplay');hide('ebox');hide('results');hide('maxbuy');window.scrollTo({top:0,behavior:'smooth'});}
+
+function setSim(val,btn){
+  simFilter=val;
+  document.querySelectorAll('.sim-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+}
+
+async function loadRate(){
+  try{const d=await apiFetch('/api/rate');rate=d.rate;el('rdot').className='rdot ok';el('rv').textContent='1 USD = '+rate.toFixed(4)+' EUR';el('rt').textContent='Live · '+now();}
+  catch(e){rate=0.92;el('rdot').className='rdot err';el('rv').textContent='Fallback: 0.9200';}
+}
+
+async function doSearch(){
+  const q=el('q').value.trim();
+  if(!q)return showErr('Please enter a device model name and storage size.');
+  setBusy(true);hideErr();hideInfo();hide('rlist');hide('pdisplay');picked=null;
+  try{
+    const d=await apiFetch('/api/search?q='+encodeURIComponent(q)+'&sim='+simFilter);
+    if(!d.results||!d.results.length){
+      const simMsg=simFilter!=='all'?' with '+simFilter+' SIM':'';
+      showErr('No listings found for "'+q+'"'+simMsg+'. Try a shorter search term or change SIM filter.');
+      setBusy(false);return;
+    }
+    if(d.count<d.results.length+3){
+      showInfo('Showing '+d.results.length+' matching listings from your BackMarket catalogue.');
+    }
+    renderResults(d.results);
+  }catch(e){showErr('Error: '+e.message);}
+  setBusy(false);
+}
+
+function renderResults(items){
+  const list=el('rlist');
+  list.innerHTML='';
+  items.slice(0,15).forEach(item=>{
+    const div=document.createElement('div');
+    div.className='ritem';
+    const gradeLabel=tg(item.grade);
+    const simLabel=item.simType==='esim'?'<span class="ri-tag tag-esim">eSIM</span>':item.simType==='physical'?'<span class="ri-tag tag-physical">Physical SIM</span>':'';
+    const gradeTag=gradeLabel?'<span class="ri-tag tag-grade">'+gradeLabel+'</span>':'';
+    div.innerHTML=
+      '<div class="ri-left">'+
+        '<div class="ri-title">'+esc(item.title)+'</div>'+
+        '<div class="ri-meta">'+simLabel+gradeTag+'</div>'+
+      '</div>'+
+      '<div class="ri-right">'+
+        '<div class="ri-price">€'+item.price.toFixed(2)+'</div>'+
+        '<div class="ri-note">'+(item.currency||'EUR')+'</div>'+
+      '</div>';
+    div.onclick=()=>selectItem(item,div);
+    list.appendChild(div);
+  });
+  list.style.display='flex';
+}
+
+function tg(g){
+  if(!g)return '';
+  const l=g.toLowerCase();
+  if(l.includes('parfait')||l.includes('excellent')||l.includes('like new')||l.includes('neuf'))return 'Excellent';
+  if(l.includes('tres bon')||l.includes('very good')||l.includes('good'))return 'Very Good';
+  if(l.includes('bon')||l.includes('correct')||l.includes('fair'))return 'Good';
+  if(l.includes('poor')||l.includes('passable'))return 'Fair';
+  return g;
+}
+
+function selectItem(item,el_){
+  document.querySelectorAll('.ritem').forEach(d=>d.classList.remove('sel'));
+  el_.classList.add('sel');
+  picked={title:item.title,price:item.price,grade:item.grade,simType:item.simType};
+  const simLabel=item.simType==='esim'?' · eSIM':item.simType==='physical'?' · Physical SIM':'';
+  el('pd-price').textContent='€'+item.price.toFixed(2);
+  el('pd-name').textContent=item.title+(item.grade?' · '+tg(item.grade):'')+simLabel;
+  show('pdisplay');
+}
+
+function calc(){
+  const buyUSD=parseFloat(el('buy').value)||0;
+  if(!picked){alert('Please search and select a listing first.');return;}
+  if(!buyUSD||buyUSD<=0){alert("Please enter CDK's buy price in USD.");return;}
+  const r=rate||0.92,sell=picked.price,buyEUR=buyUSD*r;
+  const commission=sell*0.12,shipping=15,ccbm=7;
+  const netRev=sell-commission-shipping-ccbm;
+  const profit=netRev-buyEUR;
+  const margin=sell>0?(profit/sell)*100:0;
+  const shouldBuy=profit>0&&margin>=5;
+  const maxBuyUSD=(netRev*0.95)/r;
+  const simLabel=picked.simType==='esim'?' (eSIM)':picked.simType==='physical'?' (Physical SIM)':'';
+
+  const rows=[
+    {l:'BackMarket selling price',v:'€'+sell.toFixed(2),c:''},
+    {l:'BackMarket commission (12%)',v:'−€'+commission.toFixed(2),c:'sub'},
+    {l:'Shipping per order',v:'−€'+shipping.toFixed(2),c:'sub'},
+    {l:'CCBM fee',v:'−€'+ccbm.toFixed(2),c:'sub'},
+    {l:'Net revenue after all fees',v:'€'+netRev.toFixed(2),c:'total'},
+    {l:'CDK buy cost ($'+buyUSD.toFixed(2)+' × '+r.toFixed(4)+')',v:'−€'+buyEUR.toFixed(2),c:'sub'},
+    {l:'Profit per unit',v:fmt(profit),c:profit>=0?'grn':'red'},
+    {l:'Net margin',v:margin.toFixed(2)+'%',c:margin>=5?'grn':'red'},
+  ];
+  el('bcard').innerHTML='<div class="bc-title">'+esc(picked.title)+simLabel+'</div>'+rows.map(r=>'<div class="brow '+r.c+'"><span>'+r.l+'</span><span class="mono">'+r.v+'</span></div>').join('');
+
+  if(!shouldBuy&&maxBuyUSD>0){el('maxbuy-val').textContent='$'+maxBuyUSD.toFixed(2)+' USD max to hit 5%';show('maxbuy');}
+  else{hide('maxbuy');}
+
+  const vb=el('vbox');
+  if(shouldBuy){
+    vb.className='verdict vbuy';
+    vb.innerHTML='<div class="vglow"></div><span class="vemoji">&#128994;</span><div class="vlabel">BUY IT</div><div class="vdetail">€'+profit.toFixed(2)+' profit · '+margin.toFixed(2)+'% net margin</div><div class="vsub">Clears the 5% minimum ✓</div>';
+  }else{
+    vb.className='verdict vno';
+    vb.innerHTML='<div class="vglow"></div><span class="vemoji">&#128308;</span><div class="vlabel">PASS</div><div class="vdetail">'+margin.toFixed(2)+'% margin'+(profit<0?' · Loss of €'+Math.abs(profit).toFixed(2)+'/unit':' · Below 5% target')+'</div><div class="vsub">Negotiate a lower price from CDK</div>';
+  }
+  show('results');el('results').scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+
+function doReset(){picked=null;el('q').value='';el('buy').value='';hide('rlist');hide('pdisplay');hideErr();hideInfo();hide('results');hide('maxbuy');window.scrollTo({top:0,behavior:'smooth'});}
 async function apiFetch(path){const res=await fetch(path);const d=await res.json();if(!res.ok)throw new Error(d.error||'HTTP '+res.status);return d;}
 function el(id){return document.getElementById(id);}
 function show(id){el(id).style.display='flex';}
 function hide(id){el(id).style.display='none';}
 function showErr(msg){const e=el('ebox');e.textContent=msg;e.style.display='block';}
 function hideErr(){el('ebox').style.display='none';}
-function setBusy(on){const b=el('sbtn'),s=el('spin'),t=el('sbtn-txt');if(on){b.classList.add('busy');s.style.display='block';t.textContent='Fetching from BackMarket...';}else{b.classList.remove('busy');s.style.display='none';t.textContent='Fetch live BackMarket prices →';}}
+function showInfo(msg){const e=el('ibox');e.textContent=msg;e.style.display='block';}
+function hideInfo(){el('ibox').style.display='none';}
+function setBusy(on){const b=el('sbtn'),s=el('spin'),t=el('sbtn-txt');if(on){b.classList.add('busy');s.style.display='block';t.textContent='Searching listings...';}else{b.classList.remove('busy');s.style.display='none';t.textContent='Search your BackMarket listings →';}}
 function fmt(n){return(n>=0?'+':'')+'€'+n.toFixed(2);}
 function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
 function now(){return new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});}
