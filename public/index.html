@@ -16,7 +16,7 @@ body{font-family:var(--fb);background:var(--g1);color:var(--w);min-height:100vh;
 .b2{width:600px;height:700px;background:var(--lime);bottom:-250px;right:-150px;animation-delay:-8s}
 .b3{width:450px;height:450px;background:var(--coral);top:35%;left:50%;animation-delay:-16s}
 @keyframes float{from{transform:translate(0,0) scale(1)}to{transform:translate(35px,25px) scale(1.1)}}
-.page{position:relative;z-index:1;max-width:800px;margin:0 auto;padding:48px 22px 100px}
+.page{position:relative;z-index:1;max-width:760px;margin:0 auto;padding:48px 22px 100px}
 .header{text-align:center;margin-bottom:44px;animation:up .6s ease both}
 .chip{display:inline-flex;align-items:center;gap:7px;background:var(--lime-a);border:1px solid var(--lime-b);border-radius:999px;padding:5px 16px 5px 10px;margin-bottom:18px;font-family:var(--fd);font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--lime)}
 .chip-dot{width:7px;height:7px;border-radius:50%;background:var(--lime);box-shadow:0 0 8px var(--lime);animation:blink 2.4s ease infinite}
@@ -43,7 +43,7 @@ input:focus{border-color:var(--teal);background:var(--teal-a)}
 .px{position:relative}.px input{padding-left:28px}
 .pxs{position:absolute;left:11px;top:50%;transform:translateY(-50%);font-size:14px;color:var(--w4);pointer-events:none}
 .sim-row{display:flex;gap:6px}
-.sim-btn{flex:1;padding:10px 8px;background:rgba(255,255,255,.06);border:1px solid var(--w15);border-radius:var(--rs);color:var(--w4);font-family:var(--fd);font-size:12px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;cursor:pointer;transition:all .15s;text-align:center}
+.sim-btn{flex:1;padding:9px 8px;background:rgba(255,255,255,.06);border:1px solid var(--w15);border-radius:var(--rs);color:var(--w4);font-family:var(--fd);font-size:12px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;cursor:pointer;transition:all .15s;text-align:center}
 .sim-btn:hover{background:var(--teal-a);border-color:var(--teal-b);color:var(--teal)}
 .sim-btn.active{background:var(--lime-a);border-color:var(--lime-b);color:var(--lime)}
 .sbtn{display:flex;align-items:center;justify-content:center;gap:9px;width:100%;margin-top:8px;padding:13px;background:var(--teal-a);border:1px solid var(--teal-b);border-radius:var(--rs);color:var(--teal);font-family:var(--fd);font-size:14px;font-weight:700;letter-spacing:.04em;cursor:pointer;transition:background .18s}
@@ -52,40 +52,27 @@ input:focus{border-color:var(--teal);background:var(--teal-a)}
 .busy .spin{display:block}
 @keyframes spin{to{transform:rotate(360deg)}}
 .ebox{display:none;margin-top:8px;padding:10px 14px;background:var(--coral-a);border:1px solid var(--coral-b);border-radius:var(--rs);font-size:13px;color:var(--coral)}
-/* Product results */
+/* Product result cards */
 .prod-list{display:none;flex-direction:column;gap:10px;margin-top:12px}
-.prod-card{background:rgba(255,255,255,.04);border:1px solid var(--w08);border-radius:var(--r);overflow:hidden;cursor:pointer;transition:border-color .15s}
-.prod-card:hover{border-color:rgba(255,255,255,.15)}
-.prod-card.sel{border-color:var(--lime-b);border-width:1.5px}
-.prod-head{display:flex;align-items:center;justify-content:space-between;padding:12px 14px;gap:12px}
-.prod-title{font-size:14px;font-weight:500;color:var(--w);flex:1;min-width:0}
-.prod-sub{font-size:12px;color:var(--w4);margin-top:3px;display:flex;gap:8px;flex-wrap:wrap}
+.prod-card{background:rgba(255,255,255,.04);border:1.5px solid var(--w08);border-radius:var(--r);cursor:pointer;transition:border-color .15s,background .15s;overflow:hidden}
+.prod-card:hover{border-color:rgba(255,255,255,.2);background:rgba(255,255,255,.05)}
+.prod-card.sel{border-color:var(--lime-b);background:var(--lime-a)}
+.pc-head{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;gap:12px}
+.pc-left{flex:1;min-width:0}
+.pc-title{font-size:14px;font-weight:500;color:var(--w);margin-bottom:5px}
+.pc-meta{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
 .tag{padding:2px 7px;border-radius:4px;font-size:10px;font-weight:700;letter-spacing:.04em;text-transform:uppercase}
-.tag-grade{background:rgba(255,255,255,.08);color:var(--w4)}
-.tag-stock{background:rgba(184,240,0,.12);color:var(--lime)}
-.tag-nostock{background:rgba(255,94,94,.1);color:var(--coral)}
-.tag-offline{background:rgba(255,176,32,.1);color:var(--amber)}
+.tag-live{background:rgba(0,229,212,.12);color:var(--teal)}
 .tag-esim{background:rgba(0,229,212,.12);color:var(--teal)}
 .tag-physical{background:rgba(255,176,32,.12);color:var(--amber)}
-.prod-listed{text-align:right;flex-shrink:0}
-.pl-label{font-size:10px;color:var(--w4);text-transform:uppercase;letter-spacing:.05em}
-.pl-price{font-family:var(--fm);font-size:15px;color:var(--w4)}
-/* Markets table */
-.markets{padding:0 14px 14px}
-.mkt-title{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--w4);margin-bottom:8px;padding-top:4px;border-top:1px solid var(--w08)}
-.mkt-table{width:100%;border-collapse:collapse}
-.mkt-table th{font-size:11px;color:var(--w4);font-weight:500;text-align:left;padding:4px 8px;border-bottom:1px solid var(--w08)}
-.mkt-table th:last-child,.mkt-table td:last-child{text-align:right}
-.mkt-table tr{cursor:pointer;transition:background .12s}
-.mkt-table tr.row-nostock td{opacity:0.6}
-.mkt-table tr:hover{background:rgba(255,255,255,.04)}
-.mkt-table tr.sel-row{background:var(--lime-a)}
-.mkt-table td{padding:7px 8px;font-size:13px;color:rgba(255,255,255,.75);border-bottom:1px solid rgba(255,255,255,.04)}
-.mkt-table tr:last-child td{border-bottom:none}
-.mkt-flag{font-size:14px;margin-right:4px}
-.mkt-winner{font-family:var(--fm);font-size:14px;font-weight:500;color:var(--lime)}
-.mkt-towin{font-family:var(--fm);font-size:13px;color:var(--amber)}
-.no-markets{font-size:13px;color:var(--w4);padding:10px 0;text-align:center;font-style:italic}
+.tag-both{background:rgba(255,255,255,.08);color:var(--w4)}
+.tag-adj{background:rgba(184,240,0,.12);color:var(--lime)}
+.pc-right{flex-shrink:0;text-align:right}
+.pc-live-label{font-size:10px;color:var(--w4);text-transform:uppercase;letter-spacing:.05em;margin-bottom:2px}
+.pc-live-price{font-family:var(--fm);font-size:20px;font-weight:500;color:var(--w)}
+.pc-adj{font-size:12px;color:var(--lime);margin-top:2px}
+.pc-link{display:block;padding:8px 16px;border-top:1px solid var(--w08);font-size:12px;color:var(--teal);text-decoration:none;opacity:.7}
+.pc-link:hover{opacity:1}
 /* Selected display */
 .sel-display{display:none;margin-top:10px;padding:14px 16px;background:linear-gradient(135deg,rgba(184,240,0,.08),rgba(0,229,212,.05));border:1.5px solid var(--lime-b);border-radius:var(--rs)}
 .sd-top{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
@@ -94,8 +81,8 @@ input:focus{border-color:var(--teal);background:var(--teal-a)}
 .sd-price-block{text-align:right;flex-shrink:0}
 .sd-price-label{font-size:10px;color:var(--w4);text-transform:uppercase;letter-spacing:.05em;margin-bottom:2px}
 .sd-price{font-family:var(--fm);font-size:22px;font-weight:500;color:var(--lime)}
-.sd-mkt{font-size:12px;color:var(--w4)}
-/* Fee + calc */
+.sd-sub{font-size:11px;color:var(--w4);margin-top:2px}
+/* Fee section */
 .fee-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
 .fbadge{background:var(--w04);border:1px solid var(--w08);border-radius:var(--rs);padding:12px;text-align:center}
 .fbl{font-size:11px;color:var(--w4);margin-bottom:5px;line-height:1.4}
@@ -134,7 +121,7 @@ input:focus{border-color:var(--teal);background:var(--teal-a)}
 .rbtn:hover{border-color:var(--w4);color:var(--w)}
 .footer{text-align:center;margin-top:56px;font-size:12px;color:rgba(255,255,255,.18)}
 @keyframes up{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
-@media(max-width:560px){.fee-grid{grid-template-columns:1fr}.page{padding:24px 14px 80px}.card{padding:18px}.sim-row{flex-wrap:wrap}.sd-top{flex-direction:column}.sd-price-block{text-align:left}}
+@media(max-width:560px){.fee-grid{grid-template-columns:1fr}.page{padding:24px 14px 80px}.card{padding:18px}.row{flex-direction:column}.sim-row{flex-wrap:wrap}.sd-top{flex-direction:column}.sd-price-block{text-align:left}}
 </style>
 </head>
 <body>
@@ -143,18 +130,17 @@ input:focus{border-color:var(--teal);background:var(--teal-a)}
   <div class="header">
     <div class="chip"><span class="chip-dot"></span>G&amp;I &times; CDK &mdash; Live</div>
     <h1>Buy <em>smarter,</em><br>not harder.</h1>
-    <p class="sub">Search by model, see live BackBox prices across all markets, get an instant buy or pass.</p>
+    <p class="sub">Searches BackMarket.de live — gets the real public selling price, minus 5% margin buffer, instant buy or pass.</p>
   </div>
 
   <div class="rate"><div class="rdot" id="rdot"></div><span class="rl">Live USD&rarr;EUR:</span><span class="rv" id="rv">Loading...</span><span class="rt" id="rt"></span></div>
 
-  <!-- STEP 1 -->
   <div class="card" style="animation-delay:.06s">
-    <div class="ch"><div class="ci c-teal">&#128269;</div><span class="ct">Step 1 &mdash; Search device model</span></div>
+    <div class="ch"><div class="ci c-teal">&#128269;</div><span class="ct">Step 1 &mdash; Search any device</span></div>
     <div class="row">
       <div class="fld" style="flex:2">
-        <label>Model &amp; storage (e.g. iPhone 14 128GB)</label>
-        <input type="text" id="q" placeholder="e.g. iPhone 14 128GB or Galaxy S22 256GB" onkeydown="if(event.key==='Enter')doSearch()"/>
+        <label>Model &amp; storage (type anything — "s22 128", "iphone 16 128gb", "pixel 8")</label>
+        <input type="text" id="q" placeholder="e.g. iPhone 16 128GB or Galaxy S22 256GB" onkeydown="if(event.key==='Enter')doSearch()"/>
       </div>
       <div class="fld">
         <label>SIM type</label>
@@ -165,20 +151,21 @@ input:focus{border-color:var(--teal);background:var(--teal-a)}
         </div>
       </div>
     </div>
-    <button class="sbtn" id="sbtn" onclick="doSearch()"><div class="spin" id="spin"></div><span id="stxt">Search &amp; fetch live prices &rarr;</span></button>
+    <button class="sbtn" id="sbtn" onclick="doSearch()"><div class="spin" id="spin"></div><span id="stxt">Search BackMarket.de live &rarr;</span></button>
     <div class="ebox" id="ebox"></div>
-
-    <!-- Product results with inline market tables -->
     <div class="prod-list" id="prodList"></div>
     <div class="sel-display" id="selDisplay">
       <div class="sd-top">
         <div><div class="sd-title" id="sd-title"></div><div class="sd-meta" id="sd-meta"></div></div>
-        <div class="sd-price-block"><div class="sd-price-label">Selected selling price</div><div class="sd-price" id="sd-price"></div><div class="sd-mkt" id="sd-mkt"></div></div>
+        <div class="sd-price-block">
+          <div class="sd-price-label">Selling price (BM.de &minus;5%)</div>
+          <div class="sd-price" id="sd-price"></div>
+          <div class="sd-sub" id="sd-sub"></div>
+        </div>
       </div>
     </div>
   </div>
 
-  <!-- STEP 2 -->
   <div class="card" style="animation-delay:.12s">
     <div class="ch"><div class="ci c-amber">&#128181;</div><span class="ct">Step 2 &mdash; CDK's buy price</span></div>
     <div class="fld">
@@ -187,7 +174,6 @@ input:focus{border-color:var(--teal);background:var(--teal-a)}
     </div>
   </div>
 
-  <!-- FEES -->
   <div class="card" style="animation-delay:.18s">
     <div class="ch"><div class="ci c-coral">&#128202;</div><span class="ct">Fee structure &mdash; fixed</span></div>
     <div class="fee-grid">
@@ -206,184 +192,105 @@ input:focus{border-color:var(--teal);background:var(--teal-a)}
     <div class="verdict" id="vbox"><div class="vglow"></div></div>
     <button class="rbtn" onclick="doReset()">&larr; New calculation</button>
   </div>
-
   <div class="footer">CDK Buying Calculator &middot; G&amp;I International Ltd &times; CDK Tech HK</div>
 </div>
 <script>
-let rate = null, rates = {}, picked = null, simFilter = 'all';
+let rate=null, rates={}, picked=null, simFilter='all';
 loadRate();
 
 function setSim(v,btn){ simFilter=v; document.querySelectorAll('.sim-btn').forEach(b=>b.classList.remove('active')); btn.classList.add('active'); }
 
 async function loadRate(){
-  try{
-    const d = await api('/api/rate');
-    rate = d.rate; rates = d.rates || {};
-    el('rdot').className = 'rdot ok';
-    el('rv').textContent = '1 USD = ' + rate.toFixed(4) + ' EUR';
-    el('rt').textContent = 'Live ÃÂÃÂ· ' + now();
-  }catch(e){ rate=0.92; el('rdot').className='rdot err'; el('rv').textContent='Fallback: 0.9200'; }
+  try{const d=await api('/api/rate');rate=d.rate;rates=d.rates||{};el('rdot').className='rdot ok';el('rv').textContent='1 USD = '+rate.toFixed(4)+' EUR';el('rt').textContent='Live · '+now();}
+  catch(e){rate=0.92;el('rdot').className='rdot err';el('rv').textContent='Fallback: 0.9200';}
 }
 
 async function doSearch(){
-  const q = el('q').value.trim();
-  if(!q) return showErr('Please enter a device model and storage size.');
-  setBusy(true); hideErr(); hide('prodList'); hide('selDisplay'); picked=null;
-
+  const q=el('q').value.trim();
+  if(!q)return showErr('Please enter a model name.');
+  setBusy(true);hideErr();hide('prodList');hide('selDisplay');picked=null;
   try{
-    const d = await api('/api/search?q='+encodeURIComponent(q)+'&sim='+simFilter);
+    const d=await api('/api/search?q='+encodeURIComponent(q)+'&sim='+simFilter);
     if(!d.results||!d.results.length){
-      showErr('No listings found for "'+q+'". Try a different search ÃÂ¢ÃÂÃÂ e.g. "iPhone 14 128GB"');
-      setBusy(false); return;
+      showErr('No results found for "'+q+'" on BackMarket.de. Try a slightly different search — e.g. "iPhone 16 128" or "Galaxy S22 128GB".');
+      setBusy(false);return;
     }
     renderProducts(d.results);
-  }catch(e){ showErr('Error: '+e.message); }
+  }catch(e){showErr('Error: '+e.message);}
   setBusy(false);
 }
 
-const FLAGS = {FR:'&#127467;&#127479;',DE:'&#127465;&#127466;',IT:'&#127470;&#127481;',ES:'&#127466;&#127480;',AT:'&#127462;&#127481;',BE:'&#127463;&#127466;',NL:'&#127475;&#127473;',PT:'&#127477;&#127481;',IE:'&#127470;&#127466;',GR:'&#127468;&#127479;',SE:'&#127480;&#127466;',GB:'&#127468;&#127463;',UK:'&#127468;&#127463;'};
-
 function renderProducts(products){
-  const list = el('prodList');
-  list.innerHTML = '';
-
-  products.forEach((prod, pi) => {
-    const div = document.createElement('div');
-    div.className = 'prod-card';
-
-    const gradeTag = prod.grade ? '<span class="tag tag-grade">'+fmtGrade(prod.grade)+'</span>' : '';
-    const simTag = prod.simType==='esim' ? '<span class="tag tag-esim">eSIM</span>'
-      : prod.simType==='physical' ? '<span class="tag tag-physical">Physical SIM</span>'
-      : '<span class="tag tag-grade">Physical + eSIM</span>';
-    const stockTag = prod.stockLabel==='in_stock'
-      ? '<span class="tag tag-stock">&#10003; In stock ('+prod.quantity+')</span>'
-      : prod.stockLabel==='out_of_stock'
-      ? '<span class="tag tag-nostock">Out of stock</span>'
-      : prod.stockLabel==='offline'
-      ? '<span class="tag tag-offline">Offline listing</span>'
-      : '';
-
-    // Build markets table rows
-    let mktRows = '';
-    if(prod.markets && prod.markets.length){
-      prod.markets.forEach((m, mi) => {
-        const flag = FLAGS[m.flag] || m.flag;
-        const price = m.winnerPrice || m.currentPrice || m.winnerPrice;
-        const priceToWin = m.priceToWin;
-        const rowClass = prod.stockLabel !== 'in_stock' ? ' row-nostock' : '';
-        mktRows += '<tr class="'+rowClass+'" onclick="selectMarket('+pi+','+mi+',event)" data-pi="'+pi+'" data-mi="'+mi+'">' +
-          '<td><span class="mkt-flag">'+flag+'</span>'+esc(m.marketName)+'</td>' +
-          '<td><span class="mkt-winner">'+(price?m.currency+'ÃÂÃÂ '+price.toFixed(2):'ÃÂ¢ÃÂÃÂ')+'</span></td>' +
-          '<td><span class="mkt-towin">'+(priceToWin?m.currency+'ÃÂÃÂ '+priceToWin.toFixed(2):'ÃÂ¢ÃÂÃÂ')+'</span></td>' +
-          '</tr>';
-      });
-    }
-
-    div.innerHTML =
-      '<div class="prod-head">'+
-        '<div>'+
-          '<div class="prod-title">'+esc(prod.title)+'</div>'+
-          '<div class="prod-sub">'+gradeTag+simTag+stockTag+'</div>'+
+  const list=el('prodList');
+  list.innerHTML='';
+  products.forEach((prod,i)=>{
+    const div=document.createElement('div');
+    div.className='prod-card';
+    const livePrice=prod.livePrice;
+    const adjPrice=prod.adjustedPrice;
+    const simTag=prod.simType==='esim'?'<span class="tag tag-esim">eSIM</span>'
+      :prod.simType==='physical'?'<span class="tag tag-physical">Physical SIM</span>'
+      :'<span class="tag tag-both">Physical + eSIM</span>';
+    div.innerHTML=
+      '<div class="pc-head">'+
+        '<div class="pc-left">'+
+          '<div class="pc-title">'+esc(prod.title)+'</div>'+
+          '<div class="pc-meta">'+simTag+'<span class="tag tag-live">&#9679; Live BM.de</span></div>'+
         '</div>'+
-        '<div class="prod-listed">'+
-          '<div class="pl-label">Your listed price</div>'+
-          '<div class="pl-price">'+(prod.listedPrice>0?prod.currency+'ÃÂÃÂ '+prod.listedPrice.toFixed(2):'ÃÂ¢ÃÂÃÂ')+'</div>'+
+        '<div class="pc-right">'+
+          '<div class="pc-live-label">BM.de price</div>'+
+          '<div class="pc-live-price">'+(livePrice?'€'+livePrice.toFixed(2):'—')+'</div>'+
+          '<div class="pc-adj">'+(adjPrice?'Use €'+adjPrice.toFixed(2)+' (−5%)':'')+'</div>'+
         '</div>'+
       '</div>'+
-      (mktRows ?
-        '<div class="markets">'+
-          '<div class="mkt-title">Live BackBox prices by market &mdash; click a row to select</div>'+
-          '<table class="mkt-table">'+
-            '<thead><tr><th>Market</th><th>Current BackBox price</th><th>Price to win BackBox</th></tr></thead>'+
-            '<tbody>'+mktRows+'</tbody>'+
-          '</table>'+
-        '</div>'
-      : '<div class="markets"><div class="no-markets">No BackBox data available for this listing</div></div>');
-
+      (prod.productUrl?'<a class="pc-link" href="'+prod.productUrl+'" target="_blank">View on BackMarket.de →</a>':'');
+    div.querySelector('.pc-head').onclick=()=>selectProduct(prod,div);
     list.appendChild(div);
   });
-
-  // Store products data on window for selectMarket
-  window._products = products;
-  list.style.display = 'flex';
+  window._products=products;
+  list.style.display='flex';
 }
 
-function selectMarket(pi, mi, event){
-  // Remove all selections
+function selectProduct(prod,div){
   document.querySelectorAll('.prod-card').forEach(c=>c.classList.remove('sel'));
-  document.querySelectorAll('.mkt-table tr').forEach(r=>r.classList.remove('sel-row'));
-
-  const prod = window._products[pi];
-  const mkt = prod.markets[mi];
-  // Use winnerPrice (current BackBox price) for the P&L calculation
-  // as that's what buyers currently pay â the realistic selling price
-  const price = mkt.winnerPrice || mkt.priceToWin;
-  if(!price){ alert('No price data for this market.'); return; }
-
-  // Mark selected
-  const cards = document.querySelectorAll('.prod-card');
-  if(cards[pi]) cards[pi].classList.add('sel');
-  event.currentTarget.classList.add('sel-row');
-
-  // Convert price to EUR if needed (for GBP etc)
-  let priceInEur = price;
-  let priceDisplay = mkt.currency + 'ÃÂÃÂ ' + price.toFixed(2);
-  if(mkt.currency !== 'EUR' && rates[mkt.currency]){
-    priceInEur = price / rates[mkt.currency]; // convert to EUR via USD as base
-    // Actually rates are USD-based: rates.EUR = how many EUR per 1 USD
-    // So price in EUR = price_in_local / rates[currency] * rates.EUR
-    priceInEur = (price / rates[mkt.currency]) * (rates.EUR || 1);
-  }
-
-  picked = {
-    title: prod.title,
-    grade: prod.grade,
-    simType: prod.simType,
-    price: price,
-    priceEUR: mkt.currency === 'EUR' ? price : priceInEur,
-    currency: mkt.currency,
-    marketName: mkt.marketName,
-    priceDisplay: priceDisplay
-  };
-
-  const gradeStr = fmtGrade(prod.grade) ? ' ÃÂÃÂ· ' + fmtGrade(prod.grade) : '';
-  const simStr = prod.simType==='esim'?' ÃÂÃÂ· eSIM':prod.simType==='physical'?' ÃÂÃÂ· Physical SIM':'';
-  el('sd-title').textContent = prod.title;
-  el('sd-meta').textContent = gradeStr.slice(3) + simStr.slice(3);
-  el('sd-price').textContent = priceDisplay;
-  el('sd-mkt').textContent = mkt.marketName + ' ÃÂÃÂ· Current BackBox winner price';
+  div.classList.add('sel');
+  const price=prod.adjustedPrice||prod.livePrice;
+  picked={title:prod.title,price,livePrice:prod.livePrice,simType:prod.simType,currency:prod.currency||'EUR'};
+  el('sd-title').textContent=prod.title;
+  const simStr=prod.simType==='esim'?' · eSIM':prod.simType==='physical'?' · Physical SIM':'';
+  el('sd-meta').textContent='BackMarket.de live price'+simStr;
+  el('sd-price').textContent='€'+price.toFixed(2);
+  el('sd-sub').textContent='BM.de: €'+(prod.livePrice?.toFixed(2)||'—')+' minus 5% headroom';
   show('selDisplay');
   el('selDisplay').scrollIntoView({behavior:'smooth',block:'nearest'});
 }
 
 function calc(){
-  const buyUSD = parseFloat(el('buy').value)||0;
-  if(!picked){ alert('Please search, then click a market row to select a price.'); return; }
-  if(!buyUSD||buyUSD<=0){ alert("Please enter CDK's buy price in USD."); return; }
-
-  const r = rate||0.92;
-  const sell = picked.priceEUR; // always work in EUR
-  const buyEUR = buyUSD * r;
-  const commission = sell*0.12, shipping=15, ccbm=7;
-  const netRev = sell - commission - shipping - ccbm;
-  const profit = netRev - buyEUR;
-  const margin = sell>0?(profit/sell)*100:0;
-  const shouldBuy = profit>0&&margin>=5;
-  const maxBuyUSD = (netRev*0.95)/r;
-  const currNote = picked.currency!=='EUR'?' (converted to EUR)':'';
+  const buyUSD=parseFloat(el('buy').value)||0;
+  if(!picked){alert('Please search and select a product first.');return;}
+  if(!buyUSD||buyUSD<=0){alert("Please enter CDK's buy price in USD.");return;}
+  const r=rate||0.92;
+  const sell=picked.price;
+  const buyEUR=buyUSD*r;
+  const commission=sell*0.12,shipping=15,ccbm=7;
+  const netRev=sell-commission-shipping-ccbm;
+  const profit=netRev-buyEUR;
+  const margin=sell>0?(profit/sell)*100:0;
+  const shouldBuy=profit>0&&margin>=5;
+  const maxBuyUSD=(netRev*0.95)/r;
+  const simNote=picked.simType==='esim'?' (eSIM)':picked.simType==='physical'?' (Physical SIM)':'';
 
   const rows=[
-    {l:'BackBox winner price ÃÂ¢ÃÂÃÂ '+picked.marketName+currNote,v:'ÃÂ¢ÃÂÃÂ¬'+sell.toFixed(2),c:''},
-    {l:'BackMarket commission (12%)',v:'ÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂ¬'+commission.toFixed(2),c:'sub'},
-    {l:'Shipping per order',v:'ÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂ¬'+shipping.toFixed(2),c:'sub'},
-    {l:'CCBM fee',v:'ÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂ¬'+ccbm.toFixed(2),c:'sub'},
-    {l:'Net revenue after all fees',v:'ÃÂ¢ÃÂÃÂ¬'+netRev.toFixed(2),c:'total'},
-    {l:'CDK buy cost ($'+buyUSD.toFixed(2)+' ÃÂÃÂ '+r.toFixed(4)+')',v:'ÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂ¬'+buyEUR.toFixed(2),c:'sub'},
+    {l:'BackMarket.de price − 5% headroom',v:'€'+sell.toFixed(2),c:''},
+    {l:'BackMarket commission (12%)',v:'−€'+commission.toFixed(2),c:'sub'},
+    {l:'Shipping per order',v:'−€'+shipping.toFixed(2),c:'sub'},
+    {l:'CCBM fee',v:'−€'+ccbm.toFixed(2),c:'sub'},
+    {l:'Net revenue after all fees',v:'€'+netRev.toFixed(2),c:'total'},
+    {l:'CDK buy cost ($'+buyUSD.toFixed(2)+' × '+r.toFixed(4)+')',v:'−€'+buyEUR.toFixed(2),c:'sub'},
     {l:'Profit per unit',v:fmt(profit),c:profit>=0?'grn':'red'},
     {l:'Net margin',v:margin.toFixed(2)+'%',c:margin>=5?'grn':'red'},
   ];
-
-  el('bcard').innerHTML='<div class="bc-title">'+esc(picked.title)+' ÃÂ¢ÃÂÃÂ '+esc(picked.marketName)+'</div>'+
+  el('bcard').innerHTML='<div class="bc-title">'+esc(picked.title)+simNote+'</div>'+
     rows.map(r=>'<div class="brow '+r.c+'"><span>'+r.l+'</span><span class="mono">'+r.v+'</span></div>').join('');
 
   if(!shouldBuy&&maxBuyUSD>0){el('maxbuy-val').textContent='$'+maxBuyUSD.toFixed(2)+' USD max to hit 5%';show('maxbuy');}
@@ -393,16 +300,15 @@ function calc(){
   if(shouldBuy){
     vb.className='verdict vbuy';
     vb.innerHTML='<div class="vglow"></div><span class="vemoji">&#128994;</span><div class="vlabel">BUY IT</div>'+
-      '<div class="vdetail">ÃÂ¢ÃÂÃÂ¬'+profit.toFixed(2)+' profit ÃÂÃÂ· '+margin.toFixed(2)+'% net margin</div>'+
-      '<div class="vsub">Clears 5% minimum ÃÂ¢ÃÂÃÂ</div>';
+      '<div class="vdetail">€'+profit.toFixed(2)+' profit · '+margin.toFixed(2)+'% net margin</div>'+
+      '<div class="vsub">Clears 5% minimum ✓</div>';
   }else{
     vb.className='verdict vno';
     vb.innerHTML='<div class="vglow"></div><span class="vemoji">&#128308;</span><div class="vlabel">PASS</div>'+
-      '<div class="vdetail">'+margin.toFixed(2)+'% margin'+(profit<0?' ÃÂÃÂ· Loss of ÃÂ¢ÃÂÃÂ¬'+Math.abs(profit).toFixed(2)+'/unit':' ÃÂÃÂ· Below 5%')+'</div>'+
+      '<div class="vdetail">'+margin.toFixed(2)+'% margin'+(profit<0?' · Loss of €'+Math.abs(profit).toFixed(2)+'/unit':' · Below 5%')+'</div>'+
       '<div class="vsub">Max CDK should pay: <strong>$'+maxBuyUSD.toFixed(2)+' USD</strong></div>';
   }
-  show('results');
-  el('results').scrollIntoView({behavior:'smooth',block:'nearest'});
+  show('results');el('results').scrollIntoView({behavior:'smooth',block:'nearest'});
 }
 
 function doReset(){picked=null;el('q').value='';el('buy').value='';hide('prodList');hide('selDisplay');hideErr();hide('results');hide('maxbuy');window.scrollTo({top:0,behavior:'smooth'});}
@@ -413,10 +319,9 @@ function hide(id){el(id).style.display='none';}
 function showErr(m){const e=el('ebox');e.textContent=m;e.style.display='block';}
 function hideErr(){el('ebox').style.display='none';}
 function setBusy(on){const b=el('sbtn'),s=el('spin'),t=el('stxt');
-  if(on){b.classList.add('busy');s.style.display='block';t.textContent='Fetching live prices...';}
-  else{b.classList.remove('busy');s.style.display='none';t.textContent='Search & fetch live prices ÃÂ¢ÃÂÃÂ';}}
-function fmt(n){return(n>=0?'+':'')+'ÃÂ¢ÃÂÃÂ¬'+n.toFixed(2);}
-function fmtGrade(g){if(!g)return '';const l=g.toLowerCase();if(l==='excellent'||l.includes('parfait'))return 'Excellent';if(l==='very_good'||l.includes('very good'))return 'Very Good';if(l==='good')return 'Good';if(l==='fair')return 'Fair';return g;}
+  if(on){b.classList.add('busy');s.style.display='block';t.textContent='Fetching live from BackMarket.de...';}
+  else{b.classList.remove('busy');s.style.display='none';t.textContent='Search BackMarket.de live →';}}
+function fmt(n){return(n>=0?'+':'')+'€'+n.toFixed(2);}
 function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
 function now(){return new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});}
 </script>
