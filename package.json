@@ -1,0 +1,1 @@
+{"name":"cdk-buying-calculator","version":"3.0.0","main":"server.js","scripts":{"start":"node server.js"},"engines":{"node":">=14.0.0"}}
