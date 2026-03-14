@@ -24,6 +24,8 @@ const MARKETS = {
   'SE':{ name:'Sweden', currency:'SEK' },
   'GB':{ name:'United Kingdom', currency:'GBP' },
   'UK':{ name:'United Kingdom', currency:'GBP' },
+  'SK':{ name:'Slovakia', currency:'EUR' },
+  'FI':{ name:'Finland', currency:'EUR' },
 };
 
 function httpsGet(hostname, p, hdrs) {
@@ -46,48 +48,75 @@ function jsend(res, status, obj) {
   res.end(JSON.stringify(obj));
 }
 
-// ─── Keyword aliases so short/informal searches still match ──────────────────
-const ALIASES = {
-  's22': 'galaxy s22', 's21': 'galaxy s21', 's23': 'galaxy s23', 's24': 'galaxy s24',
-  's20': 'galaxy s20', 'note20': 'galaxy note 20', 'note10': 'galaxy note 10',
-  'iphone14': 'iphone 14', 'iphone13': 'iphone 13', 'iphone12': 'iphone 12',
-  'iphone15': 'iphone 15', 'iphone16': 'iphone 16', 'iphone11': 'iphone 11',
-  'pro max': 'pro max', 'plus': 'plus', 'ultra': 'ultra',
-  'pixel7': 'pixel 7', 'pixel8': 'pixel 8', 'pixel6': 'pixel 6',
-};
-
-function expandQuery(q) {
-  let expanded = q.toLowerCase().trim();
-  // Apply aliases
-  for (const [short, full] of Object.entries(ALIASES)) {
-    expanded = expanded.replace(new RegExp('\\b' + short + '\\b', 'g'), full);
-  }
-  return expanded;
+// Extract storage size from a string e.g. "128gb" -> "128", "256 gb" -> "256"
+function extractStorage(s) {
+  const m = s.toLowerCase().match(/(\d+)\s*gb/);
+  return m ? m[1] : null;
 }
 
-// Score how well a listing title matches the query
-// Flexible: partial word matches, handles "iphone 14" matching "iPhone 14 128GB - Midnight - Unlocked"
-function scoreMatch(title, queryTerms) {
-  const t = title.toLowerCase();
+// Extract model number from title/query for strict matching
+// e.g. "iPhone 16" vs "iPhone 16 Pro" vs "iPhone 16 Pro Max"
+function extractModelTokens(s) {
+  const t = s.toLowerCase()
+    .replace(/iphone/g, 'iphone')
+    .replace(/galaxy/g, 'galaxy')
+    .replace(/samsung/g, '')
+    .replace(/[^a-z0-9\s]/g, ' ')
+    .replace(/\bgo\b/g, 'gb')      // French "Go" = GB
+    .replace(/\s+/g, ' ')
+    .trim();
+  return t.split(' ').filter(x => x.length > 0);
+}
+
+// Strict scoring: storage GB must match exactly, model must match exactly
+// "iphone 16 128gb" should NOT match "iphone 16 pro max 256gb"
+function strictScore(queryTokens, titleTokens, queryStorage, titleStorage) {
+  // If query has a storage size, title MUST match it exactly
+  if (queryStorage && titleStorage && queryStorage !== titleStorage) return 0;
+  if (queryStorage && !titleStorage) return 0; // query specifies storage, title has none
+
+  // Check each query token exists in the title
   let matched = 0;
-  let totalScore = 0;
-  for (const term of queryTerms) {
-    if (t.includes(term)) {
-      matched++;
-      totalScore += term.length; // longer matches worth more
-    }
+  for (const qt of queryTokens) {
+    if (qt === queryStorage + 'gb') continue; // already handled storage
+    if (titleTokens.includes(qt)) matched++;
   }
-  // Need at least 60% of terms to match
-  if (matched < Math.ceil(queryTerms.length * 0.6)) return 0;
-  return totalScore;
+
+  const nonStorageQueryTokens = queryTokens.filter(t => t !== queryStorage + 'gb' && t !== queryStorage);
+  if (nonStorageQueryTokens.length === 0) return 0;
+
+  const ratio = matched / nonStorageQueryTokens.length;
+
+  // Need 100% of meaningful query tokens to match for strict search
+  // e.g. "iphone 16 128gb" must match ALL of: iphone, 16, 128gb
+  if (ratio < 1.0) return 0;
+
+  // Penalise if title has extra model qualifiers not in query
+  // e.g. query="iphone 16" but title has "pro" or "max" or "plus" -> lower score
+  const extras = ['pro', 'max', 'plus', 'ultra', 'mini', 'fe', 'lite', 'edge'];
+  const queryHasExtras = extras.filter(e => queryTokens.includes(e));
+  const titleHasExtras = extras.filter(e => titleTokens.includes(e));
+  
+  // Title has model qualifiers that aren't in the query = wrong model
+  const unexpectedExtras = titleHasExtras.filter(e => !queryHasExtras.includes(e));
+  if (unexpectedExtras.length > 0) return 0;
+
+  return matched + (queryStorage ? 10 : 0); // storage match bonus
 }
 
 async function searchListings(query, simFilter) {
-  const expanded = expandQuery(query);
-  const terms = expanded.replace(/[^a-z0-9\s]/g, ' ').split(/\s+/).filter(t => t.length > 0);
+  // Normalise query
+  const normQuery = query.toLowerCase()
+    .replace(/\bsamsung\b/g, '')
+    .replace(/\bgo\b/g, 'gb')
+    .replace(/[^a-z0-9\s]/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
+
+  const queryTokens = extractModelTokens(normQuery);
+  const queryStorage = extractStorage(normQuery);
 
   let allListings = [];
-  // Fetch all pages — no publication_state filter so we get all regardless of stock
   for (let page = 1; page <= 5; page++) {
     try {
       const r = await httpsGet(BM_HOST_EU,
@@ -104,11 +133,21 @@ async function searchListings(query, simFilter) {
   }
 
   const matched = allListings.map(item => {
-    const title = item.title || item.name || '';
-    const score = scoreMatch(title, terms);
+    const rawTitle = item.title || item.name || '';
+    // Normalise title same way as query
+    const normTitle = rawTitle.toLowerCase()
+      .replace(/\bgo\b/g, 'gb')
+      .replace(/[^a-z0-9\s]/g, ' ')
+      .replace(/\s+/g, ' ')
+      .trim();
+
+    const titleTokens = extractModelTokens(normTitle);
+    const titleStorage = extractStorage(normTitle);
+
+    const score = strictScore(queryTokens, titleTokens, queryStorage, titleStorage);
     if (score === 0) return null;
 
-    const tl = title.toLowerCase();
+    const tl = rawTitle.toLowerCase();
     const simType = (tl.includes('esim') || tl.includes('e-sim')) ? 'esim'
       : tl.includes('physical') ? 'physical' : 'both';
     if (simFilter === 'esim' && simType === 'physical') return null;
@@ -122,7 +161,7 @@ async function searchListings(query, simFilter) {
 
     return {
       id: item.id,
-      title,
+      title: rawTitle,
       listedPrice: parseFloat(item.price) || 0,
       grade: item.grade || '',
       simType,
@@ -136,13 +175,6 @@ async function searchListings(query, simFilter) {
   return matched;
 }
 
-// ─── BackBox data ─────────────────────────────────────────────────────────────
-// From the API spec and back office screenshots:
-//   winner_price  = CURRENT BackBox price (what the winner is selling for right now)
-//   price_to_win  = price YOU need to set to WIN the BackBox (lower than winner_price)
-// These map exactly to the back office columns:
-//   "Current BackBox price" = winner_price
-//   "Price to win BackBox"  = price_to_win
 async function getBackboxData(listingId) {
   const attempts = [
     { host: BM_HOST_EU, key: BM_KEY_EU, locale: 'fr-fr' },
@@ -166,14 +198,11 @@ async function getBackboxData(listingId) {
 
   if (!allCompetitors.length) return [];
 
-  // Group by market flag, pick best data per market
   const byMarket = {};
   for (const c of allCompetitors) {
-    const flag = (c.market || '').toUpperCase();
+    const flag = (c.market || '').toUpperCase().replace('UK', 'GB');
     if (!flag) continue;
     if (!byMarket[flag]) byMarket[flag] = {};
-
-    // winner_price = current BackBox price (the price the current winner charges)
     if (c.winner_price && c.winner_price.amount != null) {
       const wp = parseFloat(c.winner_price.amount);
       if (!isNaN(wp) && wp > 0) {
@@ -181,48 +210,40 @@ async function getBackboxData(listingId) {
         byMarket[flag].currency = c.winner_price.currency || byMarket[flag].currency || 'EUR';
       }
     }
-
-    // price_to_win = what price you need to set to win the BackBox
     if (c.price_to_win && c.price_to_win.amount != null) {
       const ptw = parseFloat(c.price_to_win.amount);
       if (!isNaN(ptw) && ptw > 0) byMarket[flag].priceToWin = ptw;
     }
-
-    // fallback currency from price field
     if (!byMarket[flag].currency && c.price && c.price.currency) {
       byMarket[flag].currency = c.price.currency;
     }
   }
 
-  const info = Object.entries(byMarket)
+  return Object.entries(byMarket)
     .map(([flag, data]) => {
-      const mkt = MARKETS[flag] || MARKETS[flag === 'UK' ? 'GB' : flag] || { name: flag, currency: 'EUR' };
+      const mkt = MARKETS[flag] || { name: flag, currency: 'EUR' };
       return {
-        flag: flag === 'UK' ? 'GB' : flag,
+        flag,
         marketName: mkt.name,
         currency: data.currency || mkt.currency,
-        winnerPrice: data.winnerPrice || null,   // "Current BackBox price"
-        priceToWin: data.priceToWin || null,     // "Price to win BackBox"
+        winnerPrice: data.winnerPrice || null,
+        priceToWin: data.priceToWin || null,
       };
     })
     .filter(m => m.winnerPrice || m.priceToWin)
     .sort((a, b) => a.marketName.localeCompare(b.marketName));
-
-  return info;
 }
 
 async function handleSearch(query, simFilter, res) {
   try {
     const listings = await searchListings(query, simFilter);
     if (!listings.length) return jsend(res, 200, { count: 0, results: [] });
-
     const enriched = await Promise.all(
       listings.map(async listing => ({
         ...listing,
         markets: listing.id ? await getBackboxData(listing.id) : []
       }))
     );
-
     jsend(res, 200, { count: enriched.length, results: enriched });
   } catch(e) {
     jsend(res, 502, { error: e.message });
