@@ -62,6 +62,9 @@ input:focus{border-color:var(--teal);background:var(--teal-a)}
 .prod-sub{font-size:12px;color:var(--w4);margin-top:3px;display:flex;gap:8px;flex-wrap:wrap}
 .tag{padding:2px 7px;border-radius:4px;font-size:10px;font-weight:700;letter-spacing:.04em;text-transform:uppercase}
 .tag-grade{background:rgba(255,255,255,.08);color:var(--w4)}
+.tag-stock{background:rgba(184,240,0,.12);color:var(--lime)}
+.tag-nostock{background:rgba(255,94,94,.1);color:var(--coral)}
+.tag-offline{background:rgba(255,176,32,.1);color:var(--amber)}
 .tag-esim{background:rgba(0,229,212,.12);color:var(--teal)}
 .tag-physical{background:rgba(255,176,32,.12);color:var(--amber)}
 .prod-listed{text-align:right;flex-shrink:0}
@@ -217,7 +220,7 @@ async function loadRate(){
     rate = d.rate; rates = d.rates || {};
     el('rdot').className = 'rdot ok';
     el('rv').textContent = '1 USD = ' + rate.toFixed(4) + ' EUR';
-    el('rt').textContent = 'Live · ' + now();
+    el('rt').textContent = 'Live Â· ' + now();
   }catch(e){ rate=0.92; el('rdot').className='rdot err'; el('rv').textContent='Fallback: 0.9200'; }
 }
 
@@ -229,7 +232,7 @@ async function doSearch(){
   try{
     const d = await api('/api/search?q='+encodeURIComponent(q)+'&sim='+simFilter);
     if(!d.results||!d.results.length){
-      showErr('No listings found for "'+q+'". Try a different search — e.g. "iPhone 14 128GB"');
+      showErr('No listings found for "'+q+'". Try a different search â e.g. "iPhone 14 128GB"');
       setBusy(false); return;
     }
     renderProducts(d.results);
@@ -251,6 +254,13 @@ function renderProducts(products){
     const simTag = prod.simType==='esim' ? '<span class="tag tag-esim">eSIM</span>'
       : prod.simType==='physical' ? '<span class="tag tag-physical">Physical SIM</span>'
       : '<span class="tag tag-grade">Physical + eSIM</span>';
+    const stockTag = prod.stockLabel==='in_stock'
+      ? '<span class="tag tag-stock">&#10003; In stock ('+prod.quantity+')</span>'
+      : prod.stockLabel==='out_of_stock'
+      ? '<span class="tag tag-nostock">Out of stock</span>'
+      : prod.stockLabel==='offline'
+      ? '<span class="tag tag-offline">Offline listing</span>'
+      : '';
 
     // Build markets table rows
     let mktRows = '';
@@ -261,8 +271,8 @@ function renderProducts(products){
         const priceToWin = m.priceToWin;
         mktRows += '<tr onclick="selectMarket('+pi+','+mi+',event)" data-pi="'+pi+'" data-mi="'+mi+'">' +
           '<td><span class="mkt-flag">'+flag+'</span>'+esc(m.marketName)+'</td>' +
-          '<td><span class="mkt-winner">'+(price?m.currency+' '+price.toFixed(2):'—')+'</span></td>' +
-          '<td><span class="mkt-towin">'+(priceToWin?m.currency+' '+priceToWin.toFixed(2):'—')+'</span></td>' +
+          '<td><span class="mkt-winner">'+(price?m.currency+'Â '+price.toFixed(2):'â')+'</span></td>' +
+          '<td><span class="mkt-towin">'+(priceToWin?m.currency+'Â '+priceToWin.toFixed(2):'â')+'</span></td>' +
           '</tr>';
       });
     }
@@ -271,11 +281,11 @@ function renderProducts(products){
       '<div class="prod-head">'+
         '<div>'+
           '<div class="prod-title">'+esc(prod.title)+'</div>'+
-          '<div class="prod-sub">'+gradeTag+simTag+'</div>'+
+          '<div class="prod-sub">'+gradeTag+simTag+stockTag+'</div>'+
         '</div>'+
         '<div class="prod-listed">'+
           '<div class="pl-label">Your listed price</div>'+
-          '<div class="pl-price">'+(prod.listedPrice>0?prod.currency+' '+prod.listedPrice.toFixed(2):'—')+'</div>'+
+          '<div class="pl-price">'+(prod.listedPrice>0?prod.currency+'Â '+prod.listedPrice.toFixed(2):'â')+'</div>'+
         '</div>'+
       '</div>'+
       (mktRows ?
@@ -313,7 +323,7 @@ function selectMarket(pi, mi, event){
 
   // Convert price to EUR if needed (for GBP etc)
   let priceInEur = price;
-  let priceDisplay = mkt.currency + ' ' + price.toFixed(2);
+  let priceDisplay = mkt.currency + 'Â ' + price.toFixed(2);
   if(mkt.currency !== 'EUR' && rates[mkt.currency]){
     priceInEur = price / rates[mkt.currency]; // convert to EUR via USD as base
     // Actually rates are USD-based: rates.EUR = how many EUR per 1 USD
@@ -332,12 +342,12 @@ function selectMarket(pi, mi, event){
     priceDisplay: priceDisplay
   };
 
-  const gradeStr = fmtGrade(prod.grade) ? ' · ' + fmtGrade(prod.grade) : '';
-  const simStr = prod.simType==='esim'?' · eSIM':prod.simType==='physical'?' · Physical SIM':'';
+  const gradeStr = fmtGrade(prod.grade) ? ' Â· ' + fmtGrade(prod.grade) : '';
+  const simStr = prod.simType==='esim'?' Â· eSIM':prod.simType==='physical'?' Â· Physical SIM':'';
   el('sd-title').textContent = prod.title;
   el('sd-meta').textContent = gradeStr.slice(3) + simStr.slice(3);
   el('sd-price').textContent = priceDisplay;
-  el('sd-mkt').textContent = mkt.marketName + ' · Current BackBox winner price';
+  el('sd-mkt').textContent = mkt.marketName + ' Â· Current BackBox winner price';
   show('selDisplay');
   el('selDisplay').scrollIntoView({behavior:'smooth',block:'nearest'});
 }
@@ -359,17 +369,17 @@ function calc(){
   const currNote = picked.currency!=='EUR'?' (converted to EUR)':'';
 
   const rows=[
-    {l:'BackBox winner price — '+picked.marketName+currNote,v:'€'+sell.toFixed(2),c:''},
-    {l:'BackMarket commission (12%)',v:'−€'+commission.toFixed(2),c:'sub'},
-    {l:'Shipping per order',v:'−€'+shipping.toFixed(2),c:'sub'},
-    {l:'CCBM fee',v:'−€'+ccbm.toFixed(2),c:'sub'},
-    {l:'Net revenue after all fees',v:'€'+netRev.toFixed(2),c:'total'},
-    {l:'CDK buy cost ($'+buyUSD.toFixed(2)+' × '+r.toFixed(4)+')',v:'−€'+buyEUR.toFixed(2),c:'sub'},
+    {l:'BackBox winner price â '+picked.marketName+currNote,v:'â¬'+sell.toFixed(2),c:''},
+    {l:'BackMarket commission (12%)',v:'ââ¬'+commission.toFixed(2),c:'sub'},
+    {l:'Shipping per order',v:'ââ¬'+shipping.toFixed(2),c:'sub'},
+    {l:'CCBM fee',v:'ââ¬'+ccbm.toFixed(2),c:'sub'},
+    {l:'Net revenue after all fees',v:'â¬'+netRev.toFixed(2),c:'total'},
+    {l:'CDK buy cost ($'+buyUSD.toFixed(2)+' Ã '+r.toFixed(4)+')',v:'ââ¬'+buyEUR.toFixed(2),c:'sub'},
     {l:'Profit per unit',v:fmt(profit),c:profit>=0?'grn':'red'},
     {l:'Net margin',v:margin.toFixed(2)+'%',c:margin>=5?'grn':'red'},
   ];
 
-  el('bcard').innerHTML='<div class="bc-title">'+esc(picked.title)+' — '+esc(picked.marketName)+'</div>'+
+  el('bcard').innerHTML='<div class="bc-title">'+esc(picked.title)+' â '+esc(picked.marketName)+'</div>'+
     rows.map(r=>'<div class="brow '+r.c+'"><span>'+r.l+'</span><span class="mono">'+r.v+'</span></div>').join('');
 
   if(!shouldBuy&&maxBuyUSD>0){el('maxbuy-val').textContent='$'+maxBuyUSD.toFixed(2)+' USD max to hit 5%';show('maxbuy');}
@@ -379,12 +389,12 @@ function calc(){
   if(shouldBuy){
     vb.className='verdict vbuy';
     vb.innerHTML='<div class="vglow"></div><span class="vemoji">&#128994;</span><div class="vlabel">BUY IT</div>'+
-      '<div class="vdetail">€'+profit.toFixed(2)+' profit · '+margin.toFixed(2)+'% net margin</div>'+
-      '<div class="vsub">Clears 5% minimum ✓</div>';
+      '<div class="vdetail">â¬'+profit.toFixed(2)+' profit Â· '+margin.toFixed(2)+'% net margin</div>'+
+      '<div class="vsub">Clears 5% minimum â</div>';
   }else{
     vb.className='verdict vno';
     vb.innerHTML='<div class="vglow"></div><span class="vemoji">&#128308;</span><div class="vlabel">PASS</div>'+
-      '<div class="vdetail">'+margin.toFixed(2)+'% margin'+(profit<0?' · Loss of €'+Math.abs(profit).toFixed(2)+'/unit':' · Below 5%')+'</div>'+
+      '<div class="vdetail">'+margin.toFixed(2)+'% margin'+(profit<0?' Â· Loss of â¬'+Math.abs(profit).toFixed(2)+'/unit':' Â· Below 5%')+'</div>'+
       '<div class="vsub">Max CDK should pay: <strong>$'+maxBuyUSD.toFixed(2)+' USD</strong></div>';
   }
   show('results');
@@ -400,8 +410,8 @@ function showErr(m){const e=el('ebox');e.textContent=m;e.style.display='block';}
 function hideErr(){el('ebox').style.display='none';}
 function setBusy(on){const b=el('sbtn'),s=el('spin'),t=el('stxt');
   if(on){b.classList.add('busy');s.style.display='block';t.textContent='Fetching live prices...';}
-  else{b.classList.remove('busy');s.style.display='none';t.textContent='Search & fetch live prices →';}}
-function fmt(n){return(n>=0?'+':'')+'€'+n.toFixed(2);}
+  else{b.classList.remove('busy');s.style.display='none';t.textContent='Search & fetch live prices â';}}
+function fmt(n){return(n>=0?'+':'')+'â¬'+n.toFixed(2);}
 function fmtGrade(g){if(!g)return '';const l=g.toLowerCase();if(l==='excellent'||l.includes('parfait'))return 'Excellent';if(l==='very_good'||l.includes('very good'))return 'Very Good';if(l==='good')return 'Good';if(l==='fair')return 'Fair';return g;}
 function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
 function now(){return new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});}
