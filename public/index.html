@@ -12,108 +12,125 @@ html{scroll-behavior:smooth}
 body{font-family:var(--fb);background:var(--g1);color:var(--w);min-height:100vh;overflow-x:hidden}
 .blobs{position:fixed;inset:0;z-index:0;overflow:hidden;pointer-events:none}
 .blob{position:absolute;border-radius:50%;filter:blur(90px);opacity:.14;animation:float 22s ease-in-out infinite alternate}
-.b1{width:700px;height:600px;background:var(--teal);top:-200px;left:-200px;animation-delay:0s}
+.b1{width:700px;height:600px;background:var(--teal);top:-200px;left:-200px}
 .b2{width:600px;height:700px;background:var(--lime);bottom:-250px;right:-150px;animation-delay:-8s}
 .b3{width:450px;height:450px;background:var(--coral);top:35%;left:50%;animation-delay:-16s}
 @keyframes float{from{transform:translate(0,0) scale(1)}to{transform:translate(35px,25px) scale(1.1)}}
-.page{position:relative;z-index:1;max-width:740px;margin:0 auto;padding:52px 22px 100px}
-.header{text-align:center;margin-bottom:48px;animation:up .6s ease both}
-.chip{display:inline-flex;align-items:center;gap:7px;background:var(--lime-a);border:1px solid var(--lime-b);border-radius:999px;padding:5px 16px 5px 10px;margin-bottom:20px;font-family:var(--fd);font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--lime)}
+.page{position:relative;z-index:1;max-width:800px;margin:0 auto;padding:48px 22px 100px}
+.header{text-align:center;margin-bottom:44px;animation:up .6s ease both}
+.chip{display:inline-flex;align-items:center;gap:7px;background:var(--lime-a);border:1px solid var(--lime-b);border-radius:999px;padding:5px 16px 5px 10px;margin-bottom:18px;font-family:var(--fd);font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--lime)}
 .chip-dot{width:7px;height:7px;border-radius:50%;background:var(--lime);box-shadow:0 0 8px var(--lime);animation:blink 2.4s ease infinite}
 @keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
-h1{font-family:var(--fd);font-size:clamp(34px,7vw,56px);font-weight:800;letter-spacing:-.025em;line-height:1.02;margin-bottom:10px}
+h1{font-family:var(--fd);font-size:clamp(32px,6vw,52px);font-weight:800;letter-spacing:-.025em;line-height:1.04;margin-bottom:10px}
 h1 em{font-style:normal;color:var(--lime)}
-.sub{font-size:15px;color:var(--w4);font-weight:300;max-width:500px;margin:0 auto;line-height:1.65}
-.rate{display:flex;align-items:center;gap:9px;padding:11px 16px;margin-bottom:20px;background:var(--teal-a);border:1px solid var(--teal-b);border-radius:var(--rs);animation:up .6s .08s ease both}
-.rdot{width:8px;height:8px;border-radius:50%;background:#444;flex-shrink:0;transition:background .4s,box-shadow .4s}
+.sub{font-size:15px;color:var(--w4);font-weight:300;max-width:480px;margin:0 auto;line-height:1.65}
+.rate{display:flex;align-items:center;gap:9px;padding:10px 16px;margin-bottom:18px;background:var(--teal-a);border:1px solid var(--teal-b);border-radius:var(--rs);animation:up .6s .08s ease both}
+.rdot{width:8px;height:8px;border-radius:50%;background:#444;flex-shrink:0;transition:background .4s}
 .rdot.ok{background:var(--lime);box-shadow:0 0 7px var(--lime)}.rdot.err{background:var(--coral)}
 .rl{font-size:13px;color:var(--w4)}.rv{font-size:13px;font-weight:500;color:var(--teal);font-family:var(--fm)}.rt{font-size:12px;color:var(--w4);margin-left:auto}
-.card{background:var(--w04);border:1px solid var(--w08);border-radius:var(--r);padding:26px 26px 22px;margin-bottom:14px;backdrop-filter:blur(14px);animation:up .6s ease both}
-.ch{display:flex;align-items:center;gap:10px;margin-bottom:18px}
-.ci{width:30px;height:30px;border-radius:8px;display:grid;place-items:center;font-size:15px;flex-shrink:0}
+.card{background:var(--w04);border:1px solid var(--w08);border-radius:var(--r);padding:24px 24px 20px;margin-bottom:12px;backdrop-filter:blur(14px);animation:up .6s ease both}
+.ch{display:flex;align-items:center;gap:10px;margin-bottom:16px}
+.ci{width:28px;height:28px;border-radius:8px;display:grid;place-items:center;font-size:14px;flex-shrink:0}
 .ct{font-family:var(--fd);font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--w4)}
 .ci.c-teal{background:var(--teal-a)}.ci.c-amber{background:var(--amber-a)}.ci.c-coral{background:var(--coral-a)}
-.fld{display:flex;flex-direction:column;gap:6px;margin-bottom:12px}
+.fld{display:flex;flex-direction:column;gap:5px;margin-bottom:10px}
 .fld label{font-size:12px;font-weight:500;color:var(--w4)}
-.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}
-input,select{background:rgba(255,255,255,.06);border:1px solid var(--w15);border-radius:var(--rs);padding:12px 14px;font-size:15px;font-family:var(--fb);color:var(--w);width:100%;outline:none;transition:border-color .18s,background .18s}
+.row{display:flex;gap:10px;align-items:flex-end}
+.row .fld{flex:1}
+input{background:rgba(255,255,255,.06);border:1px solid var(--w15);border-radius:var(--rs);padding:11px 14px;font-size:15px;font-family:var(--fb);color:var(--w);width:100%;outline:none;transition:border-color .18s,background .18s}
 input::placeholder{color:rgba(255,255,255,.2)}
-input:focus,select:focus{border-color:var(--teal);background:var(--teal-a)}
-select option{background:#0d1827}
+input:focus{border-color:var(--teal);background:var(--teal-a)}
 .px{position:relative}.px input{padding-left:28px}
 .pxs{position:absolute;left:11px;top:50%;transform:translateY(-50%);font-size:14px;color:var(--w4);pointer-events:none}
-.sim-row{display:flex;gap:8px;margin-bottom:4px}
-.sim-btn{flex:1;padding:10px 8px;background:rgba(255,255,255,.06);border:1px solid var(--w15);border-radius:var(--rs);color:var(--w4);font-family:var(--fd);font-size:12px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;cursor:pointer;transition:all .18s;text-align:center}
+.sim-row{display:flex;gap:6px}
+.sim-btn{flex:1;padding:10px 8px;background:rgba(255,255,255,.06);border:1px solid var(--w15);border-radius:var(--rs);color:var(--w4);font-family:var(--fd);font-size:12px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;cursor:pointer;transition:all .15s;text-align:center}
 .sim-btn:hover{background:var(--teal-a);border-color:var(--teal-b);color:var(--teal)}
 .sim-btn.active{background:var(--lime-a);border-color:var(--lime-b);color:var(--lime)}
-.hint{font-size:11px;color:var(--w4);margin-top:5px}
-.sbtn{display:flex;align-items:center;justify-content:center;gap:9px;width:100%;margin-top:6px;padding:13px;background:var(--teal-a);border:1px solid var(--teal-b);border-radius:var(--rs);color:var(--teal);font-family:var(--fd);font-size:14px;font-weight:700;letter-spacing:.04em;cursor:pointer;transition:background .18s}
+.sbtn{display:flex;align-items:center;justify-content:center;gap:9px;width:100%;margin-top:8px;padding:13px;background:var(--teal-a);border:1px solid var(--teal-b);border-radius:var(--rs);color:var(--teal);font-family:var(--fd);font-size:14px;font-weight:700;letter-spacing:.04em;cursor:pointer;transition:background .18s}
 .sbtn:hover{background:rgba(0,229,212,.18)}.sbtn.busy{opacity:.6;pointer-events:none}
 .spin{width:14px;height:14px;border:2px solid rgba(0,229,212,.25);border-top-color:var(--teal);border-radius:50%;animation:spin .65s linear infinite;display:none;flex-shrink:0}
 .busy .spin{display:block}
 @keyframes spin{to{transform:rotate(360deg)}}
-.ebox{display:none;margin-top:10px;padding:11px 14px;background:var(--coral-a);border:1px solid var(--coral-b);border-radius:var(--rs);font-size:13px;color:var(--coral);line-height:1.55}
-.ibox{display:none;margin-top:10px;padding:11px 14px;background:var(--amber-a);border:1px solid rgba(255,176,32,.25);border-radius:var(--rs);font-size:13px;color:var(--amber)}
-.rlist{display:none;flex-direction:column;gap:5px;margin-top:12px;max-height:320px;overflow-y:auto}
-.rlist::-webkit-scrollbar{width:3px}
-.rlist::-webkit-scrollbar-thumb{background:var(--w15);border-radius:3px}
-.ritem{display:flex;align-items:center;gap:12px;padding:11px 14px;background:var(--w04);border:1px solid var(--w08);border-radius:var(--rs);cursor:pointer;transition:background .15s,border-color .15s}
-.ritem:hover{background:var(--teal-a);border-color:var(--teal-b)}
-.ritem.sel{background:var(--lime-a);border-color:var(--lime-b);border-width:1.5px}
-.ri-left{flex:1;min-width:0}
-.ri-title{font-size:13px;color:var(--w);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.ri-meta{font-size:11px;color:var(--w4);margin-top:4px;display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.ebox{display:none;margin-top:8px;padding:10px 14px;background:var(--coral-a);border:1px solid var(--coral-b);border-radius:var(--rs);font-size:13px;color:var(--coral)}
+/* Product results */
+.prod-list{display:none;flex-direction:column;gap:10px;margin-top:12px}
+.prod-card{background:rgba(255,255,255,.04);border:1px solid var(--w08);border-radius:var(--r);overflow:hidden;cursor:pointer;transition:border-color .15s}
+.prod-card:hover{border-color:rgba(255,255,255,.15)}
+.prod-card.sel{border-color:var(--lime-b);border-width:1.5px}
+.prod-head{display:flex;align-items:center;justify-content:space-between;padding:12px 14px;gap:12px}
+.prod-title{font-size:14px;font-weight:500;color:var(--w);flex:1;min-width:0}
+.prod-sub{font-size:12px;color:var(--w4);margin-top:3px;display:flex;gap:8px;flex-wrap:wrap}
 .tag{padding:2px 7px;border-radius:4px;font-size:10px;font-weight:700;letter-spacing:.04em;text-transform:uppercase}
-.tag-esim{background:rgba(0,229,212,.15);color:var(--teal)}
-.tag-physical{background:rgba(255,176,32,.15);color:var(--amber)}
 .tag-grade{background:rgba(255,255,255,.08);color:var(--w4)}
-.tag-live{background:rgba(184,240,0,.15);color:var(--lime)}
-.tag-listed{background:rgba(255,255,255,.06);color:var(--w4)}
-.ri-right{flex-shrink:0;text-align:right}
-.ri-price{font-family:var(--fm);font-size:16px;font-weight:500;color:var(--lime)}
-.ri-sub{font-size:11px;color:var(--w4);margin-top:2px}
-.price-display{display:none;margin-top:10px;padding:16px 18px;background:linear-gradient(135deg,rgba(184,240,0,.08),rgba(0,229,212,.05));border:1.5px solid var(--lime-b);border-radius:var(--rs)}
-.pd-label{font-size:11px;color:var(--w4);text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px}
-.pd-price{font-family:var(--fm);font-size:28px;font-weight:500;color:var(--lime);margin-bottom:4px}
-.pd-meta{font-size:12px;color:var(--w4);display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.tag-esim{background:rgba(0,229,212,.12);color:var(--teal)}
+.tag-physical{background:rgba(255,176,32,.12);color:var(--amber)}
+.prod-listed{text-align:right;flex-shrink:0}
+.pl-label{font-size:10px;color:var(--w4);text-transform:uppercase;letter-spacing:.05em}
+.pl-price{font-family:var(--fm);font-size:15px;color:var(--w4)}
+/* Markets table */
+.markets{padding:0 14px 14px}
+.mkt-title{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--w4);margin-bottom:8px;padding-top:4px;border-top:1px solid var(--w08)}
+.mkt-table{width:100%;border-collapse:collapse}
+.mkt-table th{font-size:11px;color:var(--w4);font-weight:500;text-align:left;padding:4px 8px;border-bottom:1px solid var(--w08)}
+.mkt-table th:last-child,.mkt-table td:last-child{text-align:right}
+.mkt-table tr{cursor:pointer;transition:background .12s}
+.mkt-table tr:hover{background:rgba(255,255,255,.04)}
+.mkt-table tr.sel-row{background:var(--lime-a)}
+.mkt-table td{padding:7px 8px;font-size:13px;color:rgba(255,255,255,.75);border-bottom:1px solid rgba(255,255,255,.04)}
+.mkt-table tr:last-child td{border-bottom:none}
+.mkt-flag{font-size:14px;margin-right:4px}
+.mkt-winner{font-family:var(--fm);font-size:14px;font-weight:500;color:var(--lime)}
+.mkt-towin{font-family:var(--fm);font-size:13px;color:var(--amber)}
+.no-markets{font-size:13px;color:var(--w4);padding:10px 0;text-align:center;font-style:italic}
+/* Selected display */
+.sel-display{display:none;margin-top:10px;padding:14px 16px;background:linear-gradient(135deg,rgba(184,240,0,.08),rgba(0,229,212,.05));border:1.5px solid var(--lime-b);border-radius:var(--rs)}
+.sd-top{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
+.sd-title{font-size:14px;font-weight:500;color:var(--w)}
+.sd-meta{font-size:12px;color:var(--w4);margin-top:3px}
+.sd-price-block{text-align:right;flex-shrink:0}
+.sd-price-label{font-size:10px;color:var(--w4);text-transform:uppercase;letter-spacing:.05em;margin-bottom:2px}
+.sd-price{font-family:var(--fm);font-size:22px;font-weight:500;color:var(--lime)}
+.sd-mkt{font-size:12px;color:var(--w4)}
+/* Fee + calc */
 .fee-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
-.fbadge{background:var(--w04);border:1px solid var(--w08);border-radius:var(--rs);padding:14px 12px;text-align:center}
-.fbl{font-size:11px;color:var(--w4);margin-bottom:6px;line-height:1.4}
-.fbv{font-family:var(--fm);font-size:21px;font-weight:500}
+.fbadge{background:var(--w04);border:1px solid var(--w08);border-radius:var(--rs);padding:12px;text-align:center}
+.fbl{font-size:11px;color:var(--w4);margin-bottom:5px;line-height:1.4}
+.fbv{font-family:var(--fm);font-size:20px;font-weight:500}
 .fbadge:nth-child(1) .fbv{color:var(--teal)}.fbadge:nth-child(2) .fbv{color:var(--amber)}.fbadge:nth-child(3) .fbv{color:var(--coral)}
-.target-bar{display:flex;align-items:center;gap:8px;margin-top:12px;padding:10px 14px;background:var(--lime-a);border:1px solid var(--lime-b);border-radius:var(--rs);font-size:13px;color:rgba(184,240,0,.85)}
-.cta{width:100%;margin-top:6px;padding:17px;background:var(--lime);color:var(--g1);border:none;border-radius:var(--r);font-family:var(--fd);font-size:17px;font-weight:800;cursor:pointer;position:relative;overflow:hidden;transition:transform .18s,box-shadow .18s,background .18s}
-.cta:hover{background:var(--lime2);transform:translateY(-2px);box-shadow:0 14px 42px rgba(184,240,0,.25)}
-.results{display:none;margin-top:28px}
-.bcard{background:var(--w04);border:1px solid var(--w08);border-radius:var(--r);padding:24px 26px;margin-bottom:14px;animation:up .4s ease both}
-.bc-title{font-family:var(--fd);font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--w4);margin-bottom:18px}
-.brow{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid rgba(255,255,255,.05);font-size:14px;color:rgba(255,255,255,.7)}
+.target-bar{display:flex;align-items:center;gap:8px;margin-top:10px;padding:9px 13px;background:var(--lime-a);border:1px solid var(--lime-b);border-radius:var(--rs);font-size:13px;color:rgba(184,240,0,.85)}
+.cta{width:100%;margin-top:8px;padding:16px;background:var(--lime);color:var(--g1);border:none;border-radius:var(--r);font-family:var(--fd);font-size:17px;font-weight:800;cursor:pointer;transition:transform .18s,box-shadow .18s,background .18s}
+.cta:hover{background:var(--lime2);transform:translateY(-2px);box-shadow:0 12px 36px rgba(184,240,0,.25)}
+/* Results */
+.results{display:none;margin-top:24px}
+.bcard{background:var(--w04);border:1px solid var(--w08);border-radius:var(--r);padding:22px 24px;margin-bottom:12px;animation:up .4s ease both}
+.bc-title{font-family:var(--fd);font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--w4);margin-bottom:16px}
+.brow{display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px solid rgba(255,255,255,.05);font-size:14px;color:rgba(255,255,255,.7)}
 .brow:last-child{border-bottom:none}
-.brow.sub{font-size:13px;color:var(--w4);padding-left:14px}
+.brow.sub{font-size:13px;color:var(--w4);padding-left:12px}
 .brow.total{font-size:15px;font-weight:500;color:var(--w);border-bottom-color:var(--w15)}
 .brow.grn{color:var(--lime);font-weight:600;font-size:15px}
 .brow.red{color:var(--coral);font-weight:600;font-size:15px}
 .brow .mono{font-family:var(--fm)}
-.maxbuy{display:none;margin-top:14px;padding:14px 18px;background:rgba(255,176,32,.08);border:1px solid rgba(255,176,32,.22);border-radius:var(--rs);text-align:center}
-.maxbuy-label{font-size:12px;color:var(--w4);margin-bottom:6px;text-transform:uppercase;letter-spacing:.07em}
+.maxbuy{display:none;margin-top:12px;padding:12px 16px;background:rgba(255,176,32,.08);border:1px solid rgba(255,176,32,.22);border-radius:var(--rs);text-align:center}
+.maxbuy-label{font-size:12px;color:var(--w4);margin-bottom:4px;text-transform:uppercase;letter-spacing:.07em}
 .maxbuy-val{font-family:var(--fm);font-size:22px;font-weight:500;color:var(--amber)}
-.verdict{position:relative;border-radius:var(--r);padding:44px 30px 38px;text-align:center;overflow:hidden;animation:pop .5s cubic-bezier(.34,1.56,.64,1) both}
+.verdict{position:relative;border-radius:var(--r);padding:40px 28px 34px;text-align:center;overflow:hidden;animation:pop .5s cubic-bezier(.34,1.56,.64,1) both}
 @keyframes pop{from{opacity:0;transform:scale(.88)}to{opacity:1;transform:scale(1)}}
 .vbuy{background:linear-gradient(145deg,rgba(184,240,0,.1),rgba(0,229,212,.06));border:2px solid rgba(184,240,0,.35)}
 .vno{background:linear-gradient(145deg,rgba(255,94,94,.12),rgba(200,30,30,.04));border:2px solid rgba(255,94,94,.35)}
 .vglow{position:absolute;width:500px;height:500px;border-radius:50%;top:50%;left:50%;transform:translate(-50%,-50%);pointer-events:none;opacity:.07}
 .vbuy .vglow{background:radial-gradient(circle,var(--lime),transparent 70%)}.vno .vglow{background:radial-gradient(circle,var(--coral),transparent 70%)}
-.vemoji{font-size:48px;display:block;margin-bottom:10px;position:relative}
-.vlabel{font-family:var(--fd);font-size:clamp(44px,9vw,68px);font-weight:800;letter-spacing:-.025em;margin-bottom:10px;position:relative;line-height:1}
+.vemoji{font-size:44px;display:block;margin-bottom:8px;position:relative}
+.vlabel{font-family:var(--fd);font-size:clamp(40px,8vw,64px);font-weight:800;letter-spacing:-.025em;margin-bottom:8px;position:relative;line-height:1}
 .vbuy .vlabel{color:var(--lime)}.vno .vlabel{color:var(--coral)}
-.vdetail{font-size:16px;margin-bottom:5px;position:relative;line-height:1.5}
+.vdetail{font-size:16px;margin-bottom:4px;position:relative}
 .vbuy .vdetail{color:rgba(184,240,0,.85)}.vno .vdetail{color:rgba(255,94,94,.85)}
-.vsub{font-size:13px;color:var(--w4);position:relative}.vsub strong{color:var(--w)}
-.rbtn{display:block;margin:22px auto 0;padding:9px 24px;background:transparent;border:1px solid var(--w15);border-radius:999px;color:var(--w4);font-family:var(--fb);font-size:13px;cursor:pointer;transition:border-color .15s,color .15s}
+.vsub{font-size:13px;color:var(--w4);position:relative}
+.rbtn{display:block;margin:20px auto 0;padding:9px 24px;background:transparent;border:1px solid var(--w15);border-radius:999px;color:var(--w4);font-family:var(--fb);font-size:13px;cursor:pointer;transition:border-color .15s,color .15s}
 .rbtn:hover{border-color:var(--w4);color:var(--w)}
-.footer{text-align:center;margin-top:60px;font-size:12px;color:rgba(255,255,255,.18)}
+.footer{text-align:center;margin-top:56px;font-size:12px;color:rgba(255,255,255,.18)}
 @keyframes up{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
-@media(max-width:560px){.fee-grid,.grid2{grid-template-columns:1fr}.page{padding:28px 16px 80px}.card{padding:20px 18px}h1{font-size:36px}.sim-row{flex-wrap:wrap}}
+@media(max-width:560px){.fee-grid{grid-template-columns:1fr}.page{padding:24px 14px 80px}.card{padding:18px}.sim-row{flex-wrap:wrap}.sd-top{flex-direction:column}.sd-price-block{text-align:left}}
 </style>
 </head>
 <body>
@@ -122,34 +139,18 @@ select option{background:#0d1827}
   <div class="header">
     <div class="chip"><span class="chip-dot"></span>G&amp;I &times; CDK &mdash; Live</div>
     <h1>Buy <em>smarter,</em><br>not harder.</h1>
-    <p class="sub">Fetches the real BackBox winner price from BackMarket &mdash; the actual price buyers see right now.</p>
+    <p class="sub">Search by model, see live BackBox prices across all markets, get an instant buy or pass.</p>
   </div>
 
   <div class="rate"><div class="rdot" id="rdot"></div><span class="rl">Live USD&rarr;EUR:</span><span class="rv" id="rv">Loading...</span><span class="rt" id="rt"></span></div>
 
+  <!-- STEP 1 -->
   <div class="card" style="animation-delay:.06s">
-    <div class="ch"><div class="ci c-teal">&#128269;</div><span class="ct">Step 1 &mdash; Search your BackMarket listings</span></div>
-
-    <div class="fld">
-      <label>Device model &amp; storage</label>
-      <input type="text" id="q" placeholder="e.g. iPhone 14 Pro 256GB or Galaxy S22 128GB" onkeydown="if(event.key==='Enter')doSearch()"/>
-    </div>
-
-    <div class="grid2">
-      <div class="fld">
-        <label>Market</label>
-        <select id="market">
-          <option value="en-gb">UK (GBP)</option>
-          <option value="de-de">Germany (EUR)</option>
-          <option value="fr-fr">France (EUR)</option>
-          <option value="it-it">Italy (EUR)</option>
-          <option value="es-es">Spain (EUR)</option>
-          <option value="nl-nl">Netherlands (EUR)</option>
-          <option value="de-at">Austria (EUR)</option>
-          <option value="fr-be">Belgium (EUR)</option>
-          <option value="pt-pt">Portugal (EUR)</option>
-          <option value="en-ie">Ireland (EUR)</option>
-        </select>
+    <div class="ch"><div class="ci c-teal">&#128269;</div><span class="ct">Step 1 &mdash; Search device model</span></div>
+    <div class="row">
+      <div class="fld" style="flex:2">
+        <label>Model &amp; storage (e.g. iPhone 14 128GB)</label>
+        <input type="text" id="q" placeholder="e.g. iPhone 14 128GB or Galaxy S22 256GB" onkeydown="if(event.key==='Enter')doSearch()"/>
       </div>
       <div class="fld">
         <label>SIM type</label>
@@ -160,18 +161,20 @@ select option{background:#0d1827}
         </div>
       </div>
     </div>
-
-    <button class="sbtn" id="sbtn" onclick="doSearch()"><div class="spin" id="spin"></div><span id="sbtn-txt">Fetch live BackMarket prices &rarr;</span></button>
+    <button class="sbtn" id="sbtn" onclick="doSearch()"><div class="spin" id="spin"></div><span id="stxt">Search &amp; fetch live prices &rarr;</span></button>
     <div class="ebox" id="ebox"></div>
-    <div class="ibox" id="ibox"></div>
-    <div class="rlist" id="rlist"></div>
-    <div class="price-display" id="pdisplay">
-      <div class="pd-label">Selected listing</div>
-      <div class="pd-price" id="pd-price"></div>
-      <div class="pd-meta" id="pd-meta"></div>
+
+    <!-- Product results with inline market tables -->
+    <div class="prod-list" id="prodList"></div>
+    <div class="sel-display" id="selDisplay">
+      <div class="sd-top">
+        <div><div class="sd-title" id="sd-title"></div><div class="sd-meta" id="sd-meta"></div></div>
+        <div class="sd-price-block"><div class="sd-price-label">Selected selling price</div><div class="sd-price" id="sd-price"></div><div class="sd-mkt" id="sd-mkt"></div></div>
+      </div>
     </div>
   </div>
 
+  <!-- STEP 2 -->
   <div class="card" style="animation-delay:.12s">
     <div class="ch"><div class="ci c-amber">&#128181;</div><span class="ct">Step 2 &mdash; CDK's buy price</span></div>
     <div class="fld">
@@ -180,6 +183,7 @@ select option{background:#0d1827}
     </div>
   </div>
 
+  <!-- FEES -->
   <div class="card" style="animation-delay:.18s">
     <div class="ch"><div class="ci c-coral">&#128202;</div><span class="ct">Fee structure &mdash; fixed</span></div>
     <div class="fee-grid">
@@ -202,105 +206,160 @@ select option{background:#0d1827}
   <div class="footer">CDK Buying Calculator &middot; G&amp;I International Ltd &times; CDK Tech HK</div>
 </div>
 <script>
-let rate=null, picked=null, simFilter='all';
+let rate = null, rates = {}, picked = null, simFilter = 'all';
 loadRate();
 
-function setSim(val,btn){
-  simFilter=val;
-  document.querySelectorAll('.sim-btn').forEach(b=>b.classList.remove('active'));
-  btn.classList.add('active');
-}
+function setSim(v,btn){ simFilter=v; document.querySelectorAll('.sim-btn').forEach(b=>b.classList.remove('active')); btn.classList.add('active'); }
 
 async function loadRate(){
-  try{const d=await api('/api/rate');rate=d.rate;el('rdot').className='rdot ok';el('rv').textContent='1 USD = '+rate.toFixed(4)+' EUR';el('rt').textContent='Live · '+now();}
-  catch(e){rate=0.92;el('rdot').className='rdot err';el('rv').textContent='Fallback: 0.9200';}
+  try{
+    const d = await api('/api/rate');
+    rate = d.rate; rates = d.rates || {};
+    el('rdot').className = 'rdot ok';
+    el('rv').textContent = '1 USD = ' + rate.toFixed(4) + ' EUR';
+    el('rt').textContent = 'Live · ' + now();
+  }catch(e){ rate=0.92; el('rdot').className='rdot err'; el('rv').textContent='Fallback: 0.9200'; }
 }
 
 async function doSearch(){
-  const q=el('q').value.trim();
-  if(!q) return showErr('Please enter a device model name.');
-  setBusy(true);hideErr();hideInfo();hide('rlist');hide('pdisplay');picked=null;
-  const market=el('market').value;
+  const q = el('q').value.trim();
+  if(!q) return showErr('Please enter a device model and storage size.');
+  setBusy(true); hideErr(); hide('prodList'); hide('selDisplay'); picked=null;
+
   try{
-    const d=await api('/api/search?q='+encodeURIComponent(q)+'&sim='+simFilter+'&market='+market);
+    const d = await api('/api/search?q='+encodeURIComponent(q)+'&sim='+simFilter);
     if(!d.results||!d.results.length){
-      showErr('No listings found for "'+q+'"'+(simFilter!=='all'?' with '+simFilter+' SIM':'')+'. Try a shorter search term.');
-      setBusy(false);return;
+      showErr('No listings found for "'+q+'". Try a different search — e.g. "iPhone 14 128GB"');
+      setBusy(false); return;
     }
-    const liveCount=d.results.filter(r=>r.priceSource==='backbox_winner').length;
-    if(liveCount>0) showInfo('✓ Got live BackBox winner prices for '+liveCount+' of '+d.results.length+' listings.');
-    else showInfo('BackBox data not available for these listings — showing your listed prices instead.');
-    renderResults(d.results);
-  }catch(e){showErr('Error: '+e.message);}
+    renderProducts(d.results);
+  }catch(e){ showErr('Error: '+e.message); }
   setBusy(false);
 }
 
-function renderResults(items){
-  const list=el('rlist');
-  list.innerHTML='';
-  items.slice(0,15).forEach(item=>{
-    const div=document.createElement('div');
-    div.className='ritem';
-    const gradeLabel=fmtGrade(item.grade);
-    const simTag=item.simType==='esim'?'<span class="tag tag-esim">eSIM</span>':item.simType==='physical'?'<span class="tag tag-physical">Physical SIM</span>':'';
-    const gradeTag=gradeLabel?'<span class="tag tag-grade">'+gradeLabel+'</span>':'';
-    const srcTag=item.priceSource==='backbox_winner'?'<span class="tag tag-live">&#9679; Live BackBox</span>':'<span class="tag tag-listed">Listed price</span>';
-    const displayPrice=item.price||item.listedPrice;
-    div.innerHTML=
-      '<div class="ri-left">'+
-        '<div class="ri-title">'+esc(item.title)+'</div>'+
-        '<div class="ri-meta">'+simTag+gradeTag+srcTag+'</div>'+
+const FLAGS = {FR:'&#127467;&#127479;',DE:'&#127465;&#127466;',IT:'&#127470;&#127481;',ES:'&#127466;&#127480;',AT:'&#127462;&#127481;',BE:'&#127463;&#127466;',NL:'&#127475;&#127473;',PT:'&#127477;&#127481;',IE:'&#127470;&#127466;',GR:'&#127468;&#127479;',SE:'&#127480;&#127466;',GB:'&#127468;&#127463;',UK:'&#127468;&#127463;'};
+
+function renderProducts(products){
+  const list = el('prodList');
+  list.innerHTML = '';
+
+  products.forEach((prod, pi) => {
+    const div = document.createElement('div');
+    div.className = 'prod-card';
+
+    const gradeTag = prod.grade ? '<span class="tag tag-grade">'+fmtGrade(prod.grade)+'</span>' : '';
+    const simTag = prod.simType==='esim' ? '<span class="tag tag-esim">eSIM</span>'
+      : prod.simType==='physical' ? '<span class="tag tag-physical">Physical SIM</span>'
+      : '<span class="tag tag-grade">Physical + eSIM</span>';
+
+    // Build markets table rows
+    let mktRows = '';
+    if(prod.markets && prod.markets.length){
+      prod.markets.forEach((m, mi) => {
+        const flag = FLAGS[m.flag] || m.flag;
+        const price = m.winnerPrice || m.currentPrice;
+        const priceToWin = m.priceToWin;
+        mktRows += '<tr onclick="selectMarket('+pi+','+mi+',event)" data-pi="'+pi+'" data-mi="'+mi+'">' +
+          '<td><span class="mkt-flag">'+flag+'</span>'+esc(m.marketName)+'</td>' +
+          '<td><span class="mkt-winner">'+(price?m.currency+' '+price.toFixed(2):'—')+'</span></td>' +
+          '<td><span class="mkt-towin">'+(priceToWin?m.currency+' '+priceToWin.toFixed(2):'—')+'</span></td>' +
+          '</tr>';
+      });
+    }
+
+    div.innerHTML =
+      '<div class="prod-head">'+
+        '<div>'+
+          '<div class="prod-title">'+esc(prod.title)+'</div>'+
+          '<div class="prod-sub">'+gradeTag+simTag+'</div>'+
+        '</div>'+
+        '<div class="prod-listed">'+
+          '<div class="pl-label">Your listed price</div>'+
+          '<div class="pl-price">'+(prod.listedPrice>0?prod.currency+' '+prod.listedPrice.toFixed(2):'—')+'</div>'+
+        '</div>'+
       '</div>'+
-      '<div class="ri-right">'+
-        '<div class="ri-price">€'+displayPrice.toFixed(2)+'</div>'+
-        (item.marketPrice&&item.listedPrice&&Math.abs(item.marketPrice-item.listedPrice)>0.5?
-          '<div class="ri-sub">Listed: €'+item.listedPrice.toFixed(2)+'</div>':
-          '<div class="ri-sub">'+(item.currency||'EUR')+'</div>')+
-      '</div>';
-    div.onclick=()=>selectItem(item,div);
+      (mktRows ?
+        '<div class="markets">'+
+          '<div class="mkt-title">Live BackBox prices by market &mdash; click a row to select</div>'+
+          '<table class="mkt-table">'+
+            '<thead><tr><th>Market</th><th>Current BackBox price</th><th>Price to win BackBox</th></tr></thead>'+
+            '<tbody>'+mktRows+'</tbody>'+
+          '</table>'+
+        '</div>'
+      : '<div class="markets"><div class="no-markets">No BackBox data available for this listing</div></div>');
+
     list.appendChild(div);
   });
-  list.style.display='flex';
+
+  // Store products data on window for selectMarket
+  window._products = products;
+  list.style.display = 'flex';
 }
 
-function selectItem(item,el_){
-  document.querySelectorAll('.ritem').forEach(d=>d.classList.remove('sel'));
-  el_.classList.add('sel');
-  picked={
-    title:item.title,
-    price:item.price||item.listedPrice,
-    listedPrice:item.listedPrice,
-    marketPrice:item.marketPrice,
-    priceSource:item.priceSource,
-    grade:item.grade,
-    simType:item.simType
+function selectMarket(pi, mi, event){
+  // Remove all selections
+  document.querySelectorAll('.prod-card').forEach(c=>c.classList.remove('sel'));
+  document.querySelectorAll('.mkt-table tr').forEach(r=>r.classList.remove('sel-row'));
+
+  const prod = window._products[pi];
+  const mkt = prod.markets[mi];
+  const price = mkt.winnerPrice || mkt.currentPrice;
+  if(!price){ alert('No price data for this market.'); return; }
+
+  // Mark selected
+  const cards = document.querySelectorAll('.prod-card');
+  if(cards[pi]) cards[pi].classList.add('sel');
+  event.currentTarget.classList.add('sel-row');
+
+  // Convert price to EUR if needed (for GBP etc)
+  let priceInEur = price;
+  let priceDisplay = mkt.currency + ' ' + price.toFixed(2);
+  if(mkt.currency !== 'EUR' && rates[mkt.currency]){
+    priceInEur = price / rates[mkt.currency]; // convert to EUR via USD as base
+    // Actually rates are USD-based: rates.EUR = how many EUR per 1 USD
+    // So price in EUR = price_in_local / rates[currency] * rates.EUR
+    priceInEur = (price / rates[mkt.currency]) * (rates.EUR || 1);
+  }
+
+  picked = {
+    title: prod.title,
+    grade: prod.grade,
+    simType: prod.simType,
+    price: price,
+    priceEUR: mkt.currency === 'EUR' ? price : priceInEur,
+    currency: mkt.currency,
+    marketName: mkt.marketName,
+    priceDisplay: priceDisplay
   };
-  const displayPrice=item.price||item.listedPrice;
-  el('pd-price').textContent='€'+displayPrice.toFixed(2);
-  const simLabel=item.simType==='esim'?' · eSIM':item.simType==='physical'?' · Physical SIM':'';
-  const srcLabel=item.priceSource==='backbox_winner'?'<span class="tag tag-live" style="font-size:11px">&#9679; Live BackBox winner price</span>':'<span class="tag tag-listed" style="font-size:11px">Your listed price</span>';
-  el('pd-meta').innerHTML=esc(item.title)+(fmtGrade(item.grade)?' · '+fmtGrade(item.grade):'')+simLabel+'&nbsp; '+srcLabel;
-  show('pdisplay');
+
+  const gradeStr = fmtGrade(prod.grade) ? ' · ' + fmtGrade(prod.grade) : '';
+  const simStr = prod.simType==='esim'?' · eSIM':prod.simType==='physical'?' · Physical SIM':'';
+  el('sd-title').textContent = prod.title;
+  el('sd-meta').textContent = gradeStr.slice(3) + simStr.slice(3);
+  el('sd-price').textContent = priceDisplay;
+  el('sd-mkt').textContent = mkt.marketName + ' · Current BackBox winner price';
+  show('selDisplay');
+  el('selDisplay').scrollIntoView({behavior:'smooth',block:'nearest'});
 }
 
 function calc(){
-  const buyUSD=parseFloat(el('buy').value)||0;
-  if(!picked){alert('Please search and select a listing first.');return;}
-  if(!buyUSD||buyUSD<=0){alert("Please enter CDK's buy price in USD.");return;}
-  const r=rate||0.92;
-  const sell=picked.price;
-  const buyEUR=buyUSD*r;
-  const commission=sell*0.12, shipping=15, ccbm=7;
-  const netRev=sell-commission-shipping-ccbm;
-  const profit=netRev-buyEUR;
-  const margin=sell>0?(profit/sell)*100:0;
-  const shouldBuy=profit>0&&margin>=5;
-  const maxBuyUSD=(netRev*0.95)/r;
-  const priceLabel=picked.priceSource==='backbox_winner'?'BackBox winner price (live)':'Your listed price';
-  const simNote=picked.simType==='esim'?' (eSIM)':picked.simType==='physical'?' (Physical SIM)':'';
+  const buyUSD = parseFloat(el('buy').value)||0;
+  if(!picked){ alert('Please search, then click a market row to select a price.'); return; }
+  if(!buyUSD||buyUSD<=0){ alert("Please enter CDK's buy price in USD."); return; }
+
+  const r = rate||0.92;
+  const sell = picked.priceEUR; // always work in EUR
+  const buyEUR = buyUSD * r;
+  const commission = sell*0.12, shipping=15, ccbm=7;
+  const netRev = sell - commission - shipping - ccbm;
+  const profit = netRev - buyEUR;
+  const margin = sell>0?(profit/sell)*100:0;
+  const shouldBuy = profit>0&&margin>=5;
+  const maxBuyUSD = (netRev*0.95)/r;
+  const currNote = picked.currency!=='EUR'?' (converted to EUR)':'';
 
   const rows=[
-    {l:priceLabel,v:'€'+sell.toFixed(2),c:''},
+    {l:'BackBox winner price — '+picked.marketName+currNote,v:'€'+sell.toFixed(2),c:''},
     {l:'BackMarket commission (12%)',v:'−€'+commission.toFixed(2),c:'sub'},
     {l:'Shipping per order',v:'−€'+shipping.toFixed(2),c:'sub'},
     {l:'CCBM fee',v:'−€'+ccbm.toFixed(2),c:'sub'},
@@ -310,41 +369,40 @@ function calc(){
     {l:'Net margin',v:margin.toFixed(2)+'%',c:margin>=5?'grn':'red'},
   ];
 
-  el('bcard').innerHTML='<div class="bc-title">'+esc(picked.title)+simNote+'</div>'+
+  el('bcard').innerHTML='<div class="bc-title">'+esc(picked.title)+' — '+esc(picked.marketName)+'</div>'+
     rows.map(r=>'<div class="brow '+r.c+'"><span>'+r.l+'</span><span class="mono">'+r.v+'</span></div>').join('');
 
   if(!shouldBuy&&maxBuyUSD>0){el('maxbuy-val').textContent='$'+maxBuyUSD.toFixed(2)+' USD max to hit 5%';show('maxbuy');}
-  else{hide('maxbuy');}
+  else hide('maxbuy');
 
   const vb=el('vbox');
   if(shouldBuy){
     vb.className='verdict vbuy';
     vb.innerHTML='<div class="vglow"></div><span class="vemoji">&#128994;</span><div class="vlabel">BUY IT</div>'+
       '<div class="vdetail">€'+profit.toFixed(2)+' profit · '+margin.toFixed(2)+'% net margin</div>'+
-      '<div class="vsub">Clears the 5% minimum ✓</div>';
+      '<div class="vsub">Clears 5% minimum ✓</div>';
   }else{
     vb.className='verdict vno';
     vb.innerHTML='<div class="vglow"></div><span class="vemoji">&#128308;</span><div class="vlabel">PASS</div>'+
-      '<div class="vdetail">'+margin.toFixed(2)+'% margin'+(profit<0?' · Loss of €'+Math.abs(profit).toFixed(2)+'/unit':' · Below 5% target')+'</div>'+
+      '<div class="vdetail">'+margin.toFixed(2)+'% margin'+(profit<0?' · Loss of €'+Math.abs(profit).toFixed(2)+'/unit':' · Below 5%')+'</div>'+
       '<div class="vsub">Max CDK should pay: <strong>$'+maxBuyUSD.toFixed(2)+' USD</strong></div>';
   }
-  show('results');el('results').scrollIntoView({behavior:'smooth',block:'nearest'});
+  show('results');
+  el('results').scrollIntoView({behavior:'smooth',block:'nearest'});
 }
 
-function doReset(){picked=null;el('q').value='';el('buy').value='';hide('rlist');hide('pdisplay');hideErr();hideInfo();hide('results');hide('maxbuy');window.scrollTo({top:0,behavior:'smooth'});}
-async function api(path){const r=await fetch(path);const d=await r.json();if(!r.ok)throw new Error(d.error||'HTTP '+r.status);return d;}
+function doReset(){picked=null;el('q').value='';el('buy').value='';hide('prodList');hide('selDisplay');hideErr();hide('results');hide('maxbuy');window.scrollTo({top:0,behavior:'smooth'});}
+async function api(p){const r=await fetch(p);const d=await r.json();if(!r.ok)throw new Error(d.error||'HTTP '+r.status);return d;}
 function el(id){return document.getElementById(id);}
 function show(id){el(id).style.display='flex';}
 function hide(id){el(id).style.display='none';}
 function showErr(m){const e=el('ebox');e.textContent=m;e.style.display='block';}
 function hideErr(){el('ebox').style.display='none';}
-function showInfo(m){const e=el('ibox');e.innerHTML=m;e.style.display='block';}
-function hideInfo(){el('ibox').style.display='none';}
-function setBusy(on){const b=el('sbtn'),s=el('spin'),t=el('sbtn-txt');
+function setBusy(on){const b=el('sbtn'),s=el('spin'),t=el('stxt');
   if(on){b.classList.add('busy');s.style.display='block';t.textContent='Fetching live prices...';}
-  else{b.classList.remove('busy');s.style.display='none';t.textContent='Fetch live BackMarket prices →';}}
+  else{b.classList.remove('busy');s.style.display='none';t.textContent='Search & fetch live prices →';}}
 function fmt(n){return(n>=0?'+':'')+'€'+n.toFixed(2);}
-function fmtGrade(g){if(!g)return '';const l=(g||'').toLowerCase();if(l==='excellent'||l.includes('parfait'))return 'Excellent';if(l==='very_good'||l.includes('very good')||l.includes('tres bon'))return 'Very Good';if(l==='good'||l.includes('bon')||l.includes('correct'))return 'Good';if(l==='fair'||l.includes('fair'))return 'Fair';return g;}
+function fmtGrade(g){if(!g)return '';const l=g.toLowerCase();if(l==='excellent'||l.includes('parfait'))return 'Excellent';if(l==='very_good'||l.includes('very good'))return 'Very Good';if(l==='good')return 'Good';if(l==='fair')return 'Fair';return g;}
 function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
 function now(){return new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});}
 </script>
