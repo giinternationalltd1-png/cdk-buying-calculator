@@ -10,40 +10,21 @@ const BM_KEY_UK = 'MzkyZTM0ZjZlYjUxNmMyOTI3NjMwMjpCTVQtYTY4NjIyM2FiOTU4MjViMDhlZ
 const BM_HOST_EU = 'www.backmarket.fr';
 const BM_HOST_UK = 'www.backmarket.co.uk';
 
-// Markets for BackBox data
-const MARKETS = {
-  'FR':{ name:'France', currency:'EUR' }, 'DE':{ name:'Germany', currency:'EUR' },
-  'IT':{ name:'Italy', currency:'EUR' }, 'ES':{ name:'Spain', currency:'EUR' },
-  'AT':{ name:'Austria', currency:'EUR' }, 'BE':{ name:'Belgium', currency:'EUR' },
-  'NL':{ name:'Netherlands', currency:'EUR' }, 'PT':{ name:'Portugal', currency:'EUR' },
-  'IE':{ name:'Ireland', currency:'EUR' }, 'GR':{ name:'Greece', currency:'EUR' },
-  'SE':{ name:'Sweden', currency:'SEK' }, 'GB':{ name:'United Kingdom', currency:'GBP' },
-  'UK':{ name:'United Kingdom', currency:'GBP' }, 'SK':{ name:'Slovakia', currency:'EUR' },
-  'FI':{ name:'Finland', currency:'EUR' },
-};
-
-// Grade mapping: BM front-end grade names to our standard labels
-const GRADE_MAP = {
-  'Ausgezeichnet':'Excellent','Sehr gut':'Very Good','Gut':'Good','Akzeptabel':'Fair',
-  'Excellent':'Excellent','Very good':'Very Good','Good':'Good','Fair':'Fair',
-  'Parfait':'Excellent','Très bon':'Very Good','Bon':'Good','Correct':'Fair',
-};
-
-function httpsGet(hostname, p, hdrs, followRedirects) {
+function httpsGet(hostname, p, hdrs, redir) {
+  redir = redir || 0;
   return new Promise((resolve, reject) => {
     const req = https.request({
       hostname, path: p, method: 'GET',
-      headers: { 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36', ...hdrs }
+      headers: { 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36', 'Accept-Language': 'de-DE,de;q=0.9', ...hdrs }
     }, r => {
-      // Handle redirects
-      if (followRedirects && (r.statusCode === 301 || r.statusCode === 302) && r.headers.location) {
+      if (redir < 4 && (r.statusCode === 301 || r.statusCode === 302) && r.headers.location) {
         const loc = r.headers.location;
-        const parsed = new URL(loc, 'https://' + hostname);
-        return httpsGet(parsed.hostname, parsed.pathname + parsed.search, hdrs, false)
-          .then(resolve).catch(reject);
+        try {
+          const u = loc.startsWith('http') ? new URL(loc) : new URL(loc, 'https://' + hostname);
+          return httpsGet(u.hostname, u.pathname + u.search, hdrs, redir + 1).then(resolve).catch(reject);
+        } catch(e) { return reject(e); }
       }
-      let b = ''; r.on('data', c => b += c);
-      r.on('end', () => resolve({ status: r.statusCode, body: b, headers: r.headers }));
+      let b = ''; r.on('data', c => b += c); r.on('end', () => resolve({ status: r.statusCode, body: b }));
     });
     req.on('error', reject);
     req.setTimeout(20000, () => { req.destroy(); reject(new Error('Timeout')); });
@@ -52,227 +33,118 @@ function httpsGet(hostname, p, hdrs, followRedirects) {
 }
 
 function jsend(res, status, obj) {
-  res.writeHead(status, { 'Content-Type':'application/json','Access-Control-Allow-Origin':'*' });
+  res.writeHead(status, { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' });
   res.end(JSON.stringify(obj));
 }
 
-// Scrape BackMarket.de search results — uses keyword-optimised public search
-// Returns product cards with title, price (lowest), product URL
-async function scrapeSearch(query, simFilter) {
-  const encodedQ = encodeURIComponent(query);
-  const searchUrl = '/de-de/search?q=' + encodedQ;
-  
-  const r = await httpsGet('www.backmarket.de', searchUrl, {
-    'Accept': 'text/html,application/xhtml+xml',
-    'Accept-Language': 'de-DE,de;q=0.9,en;q=0.8',
-    'Accept-Encoding': 'gzip, deflate, br',
-  }, true);
-
-  if (r.status !== 200) throw new Error('BM search returned ' + r.status);
-  
+// Search BackMarket.de — uses their keyword-optimised public search
+async function scrapeSearch(query) {
+  const r = await httpsGet('www.backmarket.de', '/de-de/search?q=' + encodeURIComponent(query), {
+    'Accept': 'text/html,application/xhtml+xml'
+  });
+  if (r.status !== 200) throw new Error('BM.de search ' + r.status);
   const html = r.body;
-  
-  // Extract product links from HTML — BM uses /de-de/p/ pattern
-  const productLinks = [];
-  const linkRegex = /href="(/de-de/p/[^"#?]+(?:?[^"]*)?)"[^>]*>/g;
-  let m;
+
+  // Extract product links using string indexOf (no regex flags needed)
   const seen = new Set();
-  while ((m = linkRegex.exec(html)) !== null) {
-    const href = m[1].split('?')[0]; // strip query params
-    if (!seen.has(href) && href.match(//de-de/p/[^/]+/[a-f0-9-]{36}/)) {
+  const links = [];
+  let pos = 0;
+  const PREFIX = '/de-de/p/';
+  const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+
+  while (pos < html.length && links.length < 8) {
+    const hi = html.indexOf('href="' + PREFIX, pos);
+    if (hi === -1) break;
+    const end = html.indexOf('"', hi + 6);
+    if (end === -1) break;
+    const href = html.slice(hi + 6, end).split('?')[0].split('#')[0];
+    pos = end + 1;
+    const parts = href.split('/');
+    const last = parts[parts.length - 1];
+    if (!seen.has(href) && UUID_RE.test(last)) {
       seen.add(href);
-      productLinks.push('https://www.backmarket.de' + href);
+      links.push('https://www.backmarket.de' + href);
     }
   }
-
-  // Also get product names from the page to filter by query
-  const titleRegex = /data-qa="product-card-title"[^>]*>([^<]+)</g;
-  const titles = [];
-  while ((m = titleRegex.exec(html)) !== null) titles.push(m[1].trim());
-
-  return { productLinks: productLinks.slice(0, 8), titles, html: html.slice(0, 500) };
+  return links;
 }
 
-// Scrape a product page — get price by grade and SIM type from schema.org + page data
-async function scrapeProductPage(productUrl) {
-  const parsed = new URL(productUrl);
-  const r = await httpsGet(parsed.hostname, parsed.pathname + parsed.search, {
-    'Accept': 'text/html,application/xhtml+xml',
-    'Accept-Language': 'de-DE,de;q=0.9',
-  }, true);
+// Scrape product page — extract price from schema.org JSON embedded in page
+async function scrapeProduct(productUrl) {
+  try {
+    const u = new URL(productUrl);
+    const r = await httpsGet(u.hostname, u.pathname, { 'Accept': 'text/html,application/xhtml+xml' });
+    if (r.status !== 200) return null;
+    const html = r.body;
 
-  if (r.status !== 200) return null;
-  const html = r.body;
+    // Title from <h1>
+    let title = '';
+    const h1s = html.indexOf('<h1');
+    if (h1s !== -1) {
+      const h1c = html.indexOf('>', h1s);
+      const h1e = html.indexOf('</h1>', h1c);
+      if (h1e !== -1) title = html.slice(h1c + 1, h1e).trim().replace(/\s+/g, ' ');
+    }
 
-  // Extract title
-  const titleMatch = html.match(/<h1[^>]*>([^<]+)</h1>/);
-  const title = titleMatch ? titleMatch[1].trim() : '';
-
-  // Extract price from schema.org (most reliable)
-  const schemaMatch = html.match(/<script[^>]+type="application/ld+json"[^>]*>([sS]*?)</script>/g);
-  let schemaPrice = null;
-  let currency = 'EUR';
-  if (schemaMatch) {
-    for (const s of schemaMatch) {
+    // Price from schema.org ld+json
+    let price = null, currency = 'EUR';
+    let sp = 0;
+    while (sp < html.length) {
+      const si = html.indexOf('application/ld+json', sp);
+      if (si === -1) break;
+      const ji = html.indexOf('{', si);
+      const je = html.indexOf('</script>', si);
+      if (ji === -1 || je === -1 || ji > je) { sp = je + 1; continue; }
       try {
-        const inner = s.replace(/<script[^>]*>/, '').replace(/</script>/, '');
-        const data = JSON.parse(inner);
-        if (data.offers && data.offers.price) {
-          schemaPrice = parseFloat(data.offers.price);
-          currency = data.offers.priceCurrency || 'EUR';
+        const schema = JSON.parse(html.slice(ji, je));
+        if (schema && schema.offers && schema.offers.price) {
+          price = parseFloat(schema.offers.price);
+          currency = schema.offers.priceCurrency || 'EUR';
           break;
         }
       } catch(e) {}
+      sp = je + 1;
     }
-  }
+    if (!price) return null;
 
-  // Try to extract grade options and their prices from the page
-  // BM embeds grades as data attributes or in JSON blobs
-  const gradeData = [];
-  
-  // Look for the listing data JSON blob BM uses
-  const listingDataMatch = html.match(/"listing":s*({[^}]+})/);
-  
-  // Extract SIM info from title
-  const tl = title.toLowerCase();
-  const simType = (tl.includes('esim') || tl.includes('e-sim')) ? 'esim'
-    : tl.includes('physical') ? 'physical' : 'both';
+    const tl = title.toLowerCase();
+    const simType = (tl.includes('esim') || tl.includes('e-sim')) ? 'esim'
+      : tl.includes('physical') ? 'physical' : 'both';
 
-  // Get the UUID from URL for BackBox lookup
-  const uuidMatch = productUrl.match(//([a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})/);
-  const productUuid = uuidMatch ? uuidMatch[1] : null;
-
-  return {
-    title: title || productUrl,
-    schemaPrice,
-    currency,
-    simType,
-    productUuid,
-    url: productUrl
-  };
-}
-
-// Find G&I's listing ID that matches a product UUID (for BackBox data)
-async function findListingForProduct(productUuid) {
-  // Search our own listings for one matching this product_id
-  try {
-    for (let page = 1; page <= 3; page++) {
-      const r = await httpsGet(BM_HOST_EU,
-        '/ws/listings?page=' + page + '&page_size=50',
-        { 'Authorization': 'Basic ' + BM_KEY_EU, 'Accept': 'application/json', 'Accept-Language': 'fr-fr' }
-      );
-      if (r.status !== 200) break;
-      const d = JSON.parse(r.body);
-      const results = Array.isArray(d) ? d : (d.results || []);
-      if (!results.length) break;
-      
-      // Find listing where product_id matches or title is similar
-      for (const listing of results) {
-        if (listing.product_id === productUuid) return listing.id;
-      }
-      if (!d.next) break;
-    }
-  } catch(e) {}
-  return null;
-}
-
-// Get BackBox competitor data
-async function getBackboxData(listingId) {
-  if (!listingId) return [];
-  const attempts = [
-    { host:BM_HOST_EU, key:BM_KEY_EU, locale:'fr-fr' },
-    { host:BM_HOST_UK, key:BM_KEY_UK, locale:'en-gb' },
-  ];
-  let all = [];
-  for (const a of attempts) {
-    try {
-      const r = await httpsGet(a.host, '/ws/backbox/v1/competitors/'+listingId, {
-        'Authorization':'Basic '+a.key, 'Accept':'application/json', 'Accept-Language':a.locale
-      });
-      if (r.status === 200) {
-        const d = JSON.parse(r.body);
-        if (Array.isArray(d)) all = all.concat(d);
-      }
-    } catch(e) {}
-  }
-  if (!all.length) return [];
-  const byMarket = {};
-  for (const c of all) {
-    const flag = (c.market||'').toUpperCase().replace('UK','GB');
-    if (!flag) continue;
-    if (!byMarket[flag]) byMarket[flag] = {};
-    if (c.winner_price?.amount != null) {
-      const wp = parseFloat(c.winner_price.amount);
-      if (!isNaN(wp) && wp > 0) { byMarket[flag].winnerPrice = wp; byMarket[flag].currency = c.winner_price.currency||'EUR'; }
-    }
-    if (c.price_to_win?.amount != null) {
-      const ptw = parseFloat(c.price_to_win.amount);
-      if (!isNaN(ptw) && ptw > 0) byMarket[flag].priceToWin = ptw;
-    }
-    if (!byMarket[flag].currency && c.price?.currency) byMarket[flag].currency = c.price.currency;
-  }
-  return Object.entries(byMarket).map(([flag,data]) => {
-    const mkt = MARKETS[flag] || { name:flag, currency:'EUR' };
-    return { flag, marketName:mkt.name, currency:data.currency||mkt.currency, winnerPrice:data.winnerPrice||null, priceToWin:data.priceToWin||null };
-  }).filter(m => m.winnerPrice || m.priceToWin).sort((a,b)=>a.marketName.localeCompare(b.marketName));
+    const um = productUrl.match(/([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})/i);
+    return { title, price, currency, simType, uuid: um ? um[1] : null, url: productUrl };
+  } catch(e) { return null; }
 }
 
 async function handleSearch(query, simFilter, res) {
   try {
-    // Step 1: Search BackMarket.de (keyword-optimised, returns exact models)
-    const searchResults = await scrapeSearch(query, simFilter);
-    
-    if (!searchResults.productLinks.length) {
-      return jsend(res, 200, { count:0, results:[], searchUrl: 'https://www.backmarket.de/de-de/search?q=' + encodeURIComponent(query) });
-    }
+    const links = await scrapeSearch(query);
+    if (!links.length) return jsend(res, 200, { count: 0, results: [] });
 
-    // Step 2: Scrape each product page for price + details (parallel, limit to 6)
-    const pages = await Promise.all(
-      searchResults.productLinks.slice(0, 6).map(link => scrapeProductPage(link).catch(() => null))
-    );
-    const validPages = pages.filter(Boolean);
+    const pages = await Promise.all(links.map(l => scrapeProduct(l)));
+    const valid = pages.filter(p => p && p.price);
 
-    // Step 3: For each, try to find our listing ID and get BackBox data
-    const enriched = await Promise.all(
-      validPages.map(async prod => {
-        // Use the DE price as the market selling price
-        // The schemaPrice is what buyers on backmarket.de pay right now
-        // Reduce by 5% to account for pricing headroom as requested
-        const dePrice = prod.schemaPrice;
-        const adjustedPrice = dePrice ? Math.round(dePrice * 0.95 * 100) / 100 : null;
-
-        // Try to get BackBox data from our own API using product UUID
-        const listingId = prod.productUuid ? await findListingForProduct(prod.productUuid) : null;
-        const markets = listingId ? await getBackboxData(listingId) : [];
-
-        // Filter by SIM type
-        if (simFilter !== 'all') {
-          const simType = prod.simType;
-          if (simFilter === 'esim' && simType === 'physical') return null;
-          if (simFilter === 'physical' && simType === 'esim') return null;
-        }
-
-        return {
-          title: prod.title,
-          simType: prod.simType,
-          currency: prod.currency || 'EUR',
-          // BM.de live price (what buyers currently pay)
-          livePrice: dePrice,
-          // Adjusted price (5% below BM.de = realistic selling price after competition)
-          adjustedPrice,
-          grade: 'EXCELLENT', // BM.de shows the best available grade by default
-          stockLabel: 'in_stock', // if it's on BM.de public site, it's available
-          quantity: null,
-          markets,
-          productUrl: prod.url,
-          priceSource: 'backmarket_de_live'
-        };
+    const results = valid
+      .filter(p => {
+        if (simFilter === 'all') return true;
+        if (simFilter === 'esim') return p.simType === 'esim' || p.simType === 'both';
+        if (simFilter === 'physical') return p.simType === 'physical' || p.simType === 'both';
+        return true;
       })
-    );
+      .map(p => ({
+        title: p.title,
+        simType: p.simType,
+        currency: p.currency,
+        livePrice: p.price,
+        adjustedPrice: Math.round(p.price * 0.95 * 100) / 100,
+        stockLabel: 'in_stock',
+        quantity: null,
+        markets: [],
+        productUrl: p.url,
+        priceSource: 'backmarket_de_live'
+      }));
 
-    const results = enriched.filter(Boolean);
     jsend(res, 200, { count: results.length, results, query });
-
   } catch(e) {
     jsend(res, 502, { error: e.message });
   }
@@ -280,18 +152,18 @@ async function handleSearch(query, simFilter, res) {
 
 async function exchangeRate(res) {
   try {
-    const r = await httpsGet('api.exchangerate-api.com', '/v4/latest/USD', { Accept:'application/json' });
+    const r = await httpsGet('api.exchangerate-api.com', '/v4/latest/USD', { Accept: 'application/json' });
     const d = JSON.parse(r.body);
-    jsend(res, 200, { rate:d.rates.EUR, rates:d.rates });
-  } catch(e) { jsend(res, 502, { error:'Exchange rate unavailable' }); }
+    jsend(res, 200, { rate: d.rates.EUR, rates: d.rates });
+  } catch(e) { jsend(res, 502, { error: 'Exchange rate unavailable' }); }
 }
 
-const MIME = { '.html':'text/html; charset=utf-8','.js':'application/javascript','.json':'application/json' };
+const MIME = { '.html': 'text/html; charset=utf-8', '.js': 'application/javascript', '.json': 'application/json' };
 function serveFile(reqPath, res) {
-  const fp = path.join(__dirname, 'public', reqPath==='/' ? 'index.html' : reqPath);
-  fs.readFile(fp, (err,content) => {
+  const fp = path.join(__dirname, 'public', reqPath === '/' ? 'index.html' : reqPath);
+  fs.readFile(fp, (err, content) => {
     if (err) { res.writeHead(404); return res.end('Not found'); }
-    res.writeHead(200, { 'Content-Type': MIME[path.extname(fp)]||'text/plain' });
+    res.writeHead(200, { 'Content-Type': MIME[path.extname(fp)] || 'text/plain' });
     res.end(content);
   });
 }
@@ -299,11 +171,11 @@ function serveFile(reqPath, res) {
 http.createServer((req, res) => {
   const parsed = url.parse(req.url, true);
   const p = parsed.pathname;
-  if (req.method==='OPTIONS') { res.writeHead(204,{'Access-Control-Allow-Origin':'*'}); return res.end(); }
-  if (p==='/api/search') {
-    const q=(parsed.query.q||'').trim(), sim=(parsed.query.sim||'all').trim();
-    return q ? handleSearch(q,sim,res) : jsend(res,400,{error:'Missing ?q='});
+  if (req.method === 'OPTIONS') { res.writeHead(204, { 'Access-Control-Allow-Origin': '*' }); return res.end(); }
+  if (p === '/api/search') {
+    const q = (parsed.query.q || '').trim(), sim = (parsed.query.sim || 'all').trim();
+    return q ? handleSearch(q, sim, res) : jsend(res, 400, { error: 'Missing ?q=' });
   }
-  if (p==='/api/rate') return exchangeRate(res);
+  if (p === '/api/rate') return exchangeRate(res);
   serveFile(p, res);
-}).listen(PORT,'0.0.0.0',()=>console.log('CDK Calculator on port '+PORT));
+}).listen(PORT, '0.0.0.0', () => console.log('CDK Calculator on port ' + PORT));
