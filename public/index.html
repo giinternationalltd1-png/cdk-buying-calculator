@@ -220,7 +220,7 @@ async function loadRate(){
     rate = d.rate; rates = d.rates || {};
     el('rdot').className = 'rdot ok';
     el('rv').textContent = '1 USD = ' + rate.toFixed(4) + ' EUR';
-    el('rt').textContent = 'Live Â· ' + now();
+    el('rt').textContent = 'Live ÃÂ· ' + now();
   }catch(e){ rate=0.92; el('rdot').className='rdot err'; el('rv').textContent='Fallback: 0.9200'; }
 }
 
@@ -232,7 +232,7 @@ async function doSearch(){
   try{
     const d = await api('/api/search?q='+encodeURIComponent(q)+'&sim='+simFilter);
     if(!d.results||!d.results.length){
-      showErr('No listings found for "'+q+'". Try a different search â e.g. "iPhone 14 128GB"');
+      showErr('No listings found for "'+q+'". Try a different search Ã¢ÂÂ e.g. "iPhone 14 128GB"');
       setBusy(false); return;
     }
     renderProducts(d.results);
@@ -271,8 +271,8 @@ function renderProducts(products){
         const priceToWin = m.priceToWin;
         mktRows += '<tr onclick="selectMarket('+pi+','+mi+',event)" data-pi="'+pi+'" data-mi="'+mi+'">' +
           '<td><span class="mkt-flag">'+flag+'</span>'+esc(m.marketName)+'</td>' +
-          '<td><span class="mkt-winner">'+(price?m.currency+'Â '+price.toFixed(2):'â')+'</span></td>' +
-          '<td><span class="mkt-towin">'+(priceToWin?m.currency+'Â '+priceToWin.toFixed(2):'â')+'</span></td>' +
+          '<td><span class="mkt-winner">'+(price?m.currency+'ÃÂ '+price.toFixed(2):'Ã¢ÂÂ')+'</span></td>' +
+          '<td><span class="mkt-towin">'+(priceToWin?m.currency+'ÃÂ '+priceToWin.toFixed(2):'Ã¢ÂÂ')+'</span></td>' +
           '</tr>';
       });
     }
@@ -285,7 +285,7 @@ function renderProducts(products){
         '</div>'+
         '<div class="prod-listed">'+
           '<div class="pl-label">Your listed price</div>'+
-          '<div class="pl-price">'+(prod.listedPrice>0?prod.currency+'Â '+prod.listedPrice.toFixed(2):'â')+'</div>'+
+          '<div class="pl-price">'+(prod.listedPrice>0?prod.currency+'ÃÂ '+prod.listedPrice.toFixed(2):'Ã¢ÂÂ')+'</div>'+
         '</div>'+
       '</div>'+
       (mktRows ?
@@ -313,7 +313,9 @@ function selectMarket(pi, mi, event){
 
   const prod = window._products[pi];
   const mkt = prod.markets[mi];
-  const price = mkt.winnerPrice || mkt.currentPrice;
+  // Use winnerPrice (current BackBox price) for the P&L calculation
+  // as that's what buyers currently pay — the realistic selling price
+  const price = mkt.winnerPrice || mkt.priceToWin;
   if(!price){ alert('No price data for this market.'); return; }
 
   // Mark selected
@@ -323,7 +325,7 @@ function selectMarket(pi, mi, event){
 
   // Convert price to EUR if needed (for GBP etc)
   let priceInEur = price;
-  let priceDisplay = mkt.currency + 'Â ' + price.toFixed(2);
+  let priceDisplay = mkt.currency + 'ÃÂ ' + price.toFixed(2);
   if(mkt.currency !== 'EUR' && rates[mkt.currency]){
     priceInEur = price / rates[mkt.currency]; // convert to EUR via USD as base
     // Actually rates are USD-based: rates.EUR = how many EUR per 1 USD
@@ -342,12 +344,12 @@ function selectMarket(pi, mi, event){
     priceDisplay: priceDisplay
   };
 
-  const gradeStr = fmtGrade(prod.grade) ? ' Â· ' + fmtGrade(prod.grade) : '';
-  const simStr = prod.simType==='esim'?' Â· eSIM':prod.simType==='physical'?' Â· Physical SIM':'';
+  const gradeStr = fmtGrade(prod.grade) ? ' ÃÂ· ' + fmtGrade(prod.grade) : '';
+  const simStr = prod.simType==='esim'?' ÃÂ· eSIM':prod.simType==='physical'?' ÃÂ· Physical SIM':'';
   el('sd-title').textContent = prod.title;
   el('sd-meta').textContent = gradeStr.slice(3) + simStr.slice(3);
   el('sd-price').textContent = priceDisplay;
-  el('sd-mkt').textContent = mkt.marketName + ' Â· Current BackBox winner price';
+  el('sd-mkt').textContent = mkt.marketName + ' ÃÂ· Current BackBox winner price';
   show('selDisplay');
   el('selDisplay').scrollIntoView({behavior:'smooth',block:'nearest'});
 }
@@ -369,17 +371,17 @@ function calc(){
   const currNote = picked.currency!=='EUR'?' (converted to EUR)':'';
 
   const rows=[
-    {l:'BackBox winner price â '+picked.marketName+currNote,v:'â¬'+sell.toFixed(2),c:''},
-    {l:'BackMarket commission (12%)',v:'ââ¬'+commission.toFixed(2),c:'sub'},
-    {l:'Shipping per order',v:'ââ¬'+shipping.toFixed(2),c:'sub'},
-    {l:'CCBM fee',v:'ââ¬'+ccbm.toFixed(2),c:'sub'},
-    {l:'Net revenue after all fees',v:'â¬'+netRev.toFixed(2),c:'total'},
-    {l:'CDK buy cost ($'+buyUSD.toFixed(2)+' Ã '+r.toFixed(4)+')',v:'ââ¬'+buyEUR.toFixed(2),c:'sub'},
+    {l:'BackBox winner price Ã¢ÂÂ '+picked.marketName+currNote,v:'Ã¢ÂÂ¬'+sell.toFixed(2),c:''},
+    {l:'BackMarket commission (12%)',v:'Ã¢ÂÂÃ¢ÂÂ¬'+commission.toFixed(2),c:'sub'},
+    {l:'Shipping per order',v:'Ã¢ÂÂÃ¢ÂÂ¬'+shipping.toFixed(2),c:'sub'},
+    {l:'CCBM fee',v:'Ã¢ÂÂÃ¢ÂÂ¬'+ccbm.toFixed(2),c:'sub'},
+    {l:'Net revenue after all fees',v:'Ã¢ÂÂ¬'+netRev.toFixed(2),c:'total'},
+    {l:'CDK buy cost ($'+buyUSD.toFixed(2)+' ÃÂ '+r.toFixed(4)+')',v:'Ã¢ÂÂÃ¢ÂÂ¬'+buyEUR.toFixed(2),c:'sub'},
     {l:'Profit per unit',v:fmt(profit),c:profit>=0?'grn':'red'},
     {l:'Net margin',v:margin.toFixed(2)+'%',c:margin>=5?'grn':'red'},
   ];
 
-  el('bcard').innerHTML='<div class="bc-title">'+esc(picked.title)+' â '+esc(picked.marketName)+'</div>'+
+  el('bcard').innerHTML='<div class="bc-title">'+esc(picked.title)+' Ã¢ÂÂ '+esc(picked.marketName)+'</div>'+
     rows.map(r=>'<div class="brow '+r.c+'"><span>'+r.l+'</span><span class="mono">'+r.v+'</span></div>').join('');
 
   if(!shouldBuy&&maxBuyUSD>0){el('maxbuy-val').textContent='$'+maxBuyUSD.toFixed(2)+' USD max to hit 5%';show('maxbuy');}
@@ -389,12 +391,12 @@ function calc(){
   if(shouldBuy){
     vb.className='verdict vbuy';
     vb.innerHTML='<div class="vglow"></div><span class="vemoji">&#128994;</span><div class="vlabel">BUY IT</div>'+
-      '<div class="vdetail">â¬'+profit.toFixed(2)+' profit Â· '+margin.toFixed(2)+'% net margin</div>'+
-      '<div class="vsub">Clears 5% minimum â</div>';
+      '<div class="vdetail">Ã¢ÂÂ¬'+profit.toFixed(2)+' profit ÃÂ· '+margin.toFixed(2)+'% net margin</div>'+
+      '<div class="vsub">Clears 5% minimum Ã¢ÂÂ</div>';
   }else{
     vb.className='verdict vno';
     vb.innerHTML='<div class="vglow"></div><span class="vemoji">&#128308;</span><div class="vlabel">PASS</div>'+
-      '<div class="vdetail">'+margin.toFixed(2)+'% margin'+(profit<0?' Â· Loss of â¬'+Math.abs(profit).toFixed(2)+'/unit':' Â· Below 5%')+'</div>'+
+      '<div class="vdetail">'+margin.toFixed(2)+'% margin'+(profit<0?' ÃÂ· Loss of Ã¢ÂÂ¬'+Math.abs(profit).toFixed(2)+'/unit':' ÃÂ· Below 5%')+'</div>'+
       '<div class="vsub">Max CDK should pay: <strong>$'+maxBuyUSD.toFixed(2)+' USD</strong></div>';
   }
   show('results');
@@ -410,8 +412,8 @@ function showErr(m){const e=el('ebox');e.textContent=m;e.style.display='block';}
 function hideErr(){el('ebox').style.display='none';}
 function setBusy(on){const b=el('sbtn'),s=el('spin'),t=el('stxt');
   if(on){b.classList.add('busy');s.style.display='block';t.textContent='Fetching live prices...';}
-  else{b.classList.remove('busy');s.style.display='none';t.textContent='Search & fetch live prices â';}}
-function fmt(n){return(n>=0?'+':'')+'â¬'+n.toFixed(2);}
+  else{b.classList.remove('busy');s.style.display='none';t.textContent='Search & fetch live prices Ã¢ÂÂ';}}
+function fmt(n){return(n>=0?'+':'')+'Ã¢ÂÂ¬'+n.toFixed(2);}
 function fmtGrade(g){if(!g)return '';const l=g.toLowerCase();if(l==='excellent'||l.includes('parfait'))return 'Excellent';if(l==='very_good'||l.includes('very good'))return 'Very Good';if(l==='good')return 'Good';if(l==='fair')return 'Fair';return g;}
 function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
 function now(){return new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});}
